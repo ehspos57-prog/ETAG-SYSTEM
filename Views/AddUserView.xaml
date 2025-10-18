@@ -1,0 +1,150 @@
+﻿<Window x:Class="ETAG_ERP.Views.AddUserView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="إدارة المستخدمين" 
+        Height="600" Width="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        FlowDirection="RightToLeft">
+
+    <Window.Resources>
+        <Style x:Key="FormCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#F5F5F5">
+        <Border Style="{StaticResource FormCard}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <TextBlock Text="👤 إدارة المستخدمين" 
+                           FontSize="20" FontWeight="Bold" 
+                           Foreground="#2C3E50" 
+                           Margin="0,0,0,20" Grid.Row="0"/>
+
+                <!-- Form -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Username -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="اسم المستخدم" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="UsernameTextBox" 
+                                     materialDesign:HintAssist.Hint="اسم المستخدم"
+                                     Text="{Binding Username}"/>
+                        </StackPanel>
+
+                        <!-- Full Name -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="الاسم الكامل" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="FullNameTextBox" 
+                                     materialDesign:HintAssist.Hint="الاسم الكامل"
+                                     Text="{Binding FullName}"/>
+                        </StackPanel>
+
+                        <!-- Email -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="البريد الإلكتروني" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="EmailTextBox" 
+                                     materialDesign:HintAssist.Hint="البريد الإلكتروني"
+                                     Text="{Binding Email}"/>
+                        </StackPanel>
+
+                        <!-- Password -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="كلمة المرور" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <PasswordBox x:Name="PasswordBox" 
+                                         materialDesign:HintAssist.Hint="كلمة المرور"/>
+                        </StackPanel>
+
+                        <!-- Confirm Password -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="تأكيد كلمة المرور" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <PasswordBox x:Name="ConfirmPasswordBox" 
+                                        materialDesign:HintAssist.Hint="تأكيد كلمة المرور"/>
+                        </StackPanel>
+
+                        <!-- Role -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="الدور" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="RoleComboBox" 
+                                      materialDesign:HintAssist.Hint="اختر الدور"
+                                      SelectedItem="{Binding SelectedRole}">
+                                <ComboBoxItem Content="مدير النظام" Tag="Admin"/>
+                                <ComboBoxItem Content="مدير" Tag="Manager"/>
+                                <ComboBoxItem Content="أمين صندوق" Tag="Cashier"/>
+                                <ComboBoxItem Content="مشاهد" Tag="Viewer"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Is Admin -->
+                        <StackPanel Margin="0,0,0,15">
+                            <CheckBox x:Name="IsAdminCheckBox" 
+                                      Content="مدير النظام" 
+                                      IsChecked="{Binding IsAdmin}"/>
+                        </StackPanel>
+
+                        <!-- Is Active -->
+                        <StackPanel Margin="0,0,0,15">
+                            <CheckBox x:Name="IsActiveCheckBox" 
+                                      Content="نشط" 
+                                      IsChecked="{Binding IsActive}"/>
+                        </StackPanel>
+
+                        <!-- Phone -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="رقم الهاتف" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="PhoneTextBox" 
+                                     materialDesign:HintAssist.Hint="رقم الهاتف"
+                                     Text="{Binding Phone}"/>
+                        </StackPanel>
+
+                        <!-- Address -->
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="العنوان" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="AddressTextBox" 
+                                     materialDesign:HintAssist.Hint="العنوان"
+                                     Text="{Binding Address}"
+                                     TextWrapping="Wrap"
+                                     Height="60"
+                                     VerticalScrollBarVisibility="Auto"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Buttons -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
+                    <Button Content="💾 حفظ" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="#27AE60" 
+                            Foreground="White"
+                            Width="100"
+                            Margin="0,0,10,0"
+                            Click="SaveButton_Click"/>
+                    <Button Content="❌ إلغاء" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="#E74C3C" 
+                            Foreground="White"
+                            Width="100"
+                            Click="CancelButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
