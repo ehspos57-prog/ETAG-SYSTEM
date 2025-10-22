@@ -1,0 +1,108 @@
+<UserControl x:Class="ETAG_ERP.Views.CRMView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ETAG_ERP.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="1200"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/ModernArabicTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- CRM Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="إدارة علاقات العملاء (CRM)" Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="إدارة شاملة للعملاء المحتملين والفرص البيعية" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Foreground="{StaticResource SecondaryTextColor}"/>
+        </StackPanel>
+
+        <!-- CRM Content -->
+        <TabControl Grid.Row="1" Style="{StaticResource MaterialDesignTabControl}">
+            <!-- Leads Management Tab -->
+            <TabItem Header="العملاء المحتملون">
+                <Border Style="{StaticResource ModernCard}" Margin="10">
+                    <StackPanel>
+                        <TextBlock Text="قائمة العملاء المحتملين" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                        <!-- Leads DataGrid -->
+                        <DataGrid ItemsSource="{Binding Leads}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                                  Style="{StaticResource MaterialDesignDataGrid}"
+                                  Height="400">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="الاسم" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="الشركة" Binding="{Binding Company}" Width="*"/>
+                                <DataGridTextColumn Header="البريد الإلكتروني" Binding="{Binding Email}" Width="*"/>
+                                <DataGridTextColumn Header="الهاتف" Binding="{Binding Phone}" Width="Auto"/>
+                                <DataGridTextColumn Header="المصدر" Binding="{Binding Source}" Width="Auto"/>
+                                <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="Auto"/>
+                                <DataGridTemplateColumn Header="الإجراءات" Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="تعديل" Style="{StaticResource MaterialDesignFlatButton}" Margin="0,0,5,0"/>
+                                                <Button Content="تحويل لفرصة" Style="{StaticResource MaterialDesignFlatButton}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="إضافة عميل محتمل جديد" Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- Opportunities Management Tab -->
+            <TabItem Header="الفرص البيعية">
+                <Border Style="{StaticResource ModernCard}" Margin="10">
+                    <StackPanel>
+                        <TextBlock Text="قائمة الفرص البيعية" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                        <!-- Opportunities DataGrid -->
+                        <DataGrid ItemsSource="{Binding Opportunities}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                                  Style="{StaticResource MaterialDesignDataGrid}"
+                                  Height="400">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="الاسم" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="العميل" Binding="{Binding Client.Name}" Width="*"/>
+                                <DataGridTextColumn Header="الإيراد المتوقع" Binding="{Binding ExpectedRevenue, StringFormat='C'}" Width="Auto"/>
+                                <DataGridTextColumn Header="تاريخ الإغلاق المتوقع" Binding="{Binding ExpectedCloseDate, StringFormat='yyyy-MM-dd'}" Width="Auto"/>
+                                <DataGridTextColumn Header="المرحلة" Binding="{Binding Stage}" Width="Auto"/>
+                                <DataGridTemplateColumn Header="الإجراءات" Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="تعديل" Style="{StaticResource MaterialDesignFlatButton}" Margin="0,0,5,0"/>
+                                                <Button Content="إغلاق كفرصة" Style="{StaticResource MaterialDesignFlatButton}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="إضافة فرصة بيعية جديدة" Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

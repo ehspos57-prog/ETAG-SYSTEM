@@ -1,0 +1,85 @@
+<Window x:Class="ETAG_ERP.Views.AddCategoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="إضافة/تعديل تصنيف" Height="500" Width="600"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- العنوان -->
+        <TextBlock Grid.Row="0" Text="{Binding WindowTitle}" 
+                   FontSize="24" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- النموذج -->
+        <StackPanel Grid.Row="1">
+            <!-- اسم التصنيف -->
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="اسم التصنيف *" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox x:Name="NameTextBox" Text="{Binding Category.Name}" 
+                         Height="35" FontSize="16" Padding="10"/>
+            </StackPanel>
+
+            <!-- الوصف -->
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="الوصف" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox x:Name="DescriptionTextBox" Text="{Binding Category.Description}" 
+                         Height="80" FontSize="16" Padding="10" 
+                         TextWrapping="Wrap" AcceptsReturn="True"/>
+            </StackPanel>
+
+            <!-- التصنيف الأب -->
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="التصنيف الأب" FontWeight="Bold" Margin="0,0,0,5"/>
+                <ComboBox x:Name="ParentCategoryComboBox" 
+                          SelectedValue="{Binding Category.ParentCategoryID}"
+                          SelectedValuePath="CategoryID"
+                          DisplayMemberPath="Name"
+                          Height="35" FontSize="16" Padding="5"/>
+            </StackPanel>
+
+            <!-- الأيقونة -->
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="الأيقونة" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="IconTextBox" Text="{Binding Category.Icon}" 
+                             Height="35" FontSize="16" Padding="10" Grid.Column="0"/>
+                    <Button Grid.Column="1" Content="اختيار" 
+                            Width="80" Height="35" Margin="10,0,0,0"
+                            Click="SelectIcon_Click"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- معاينة الأيقونة -->
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="معاينة الأيقونة" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                        CornerRadius="5" Padding="20" HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding Category.Icon}" FontSize="48" 
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- الأزرار -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="💾 حفظ" Background="#4CAF50" Foreground="White"
+                    Width="100" Height="40" Margin="10" FontSize="16"
+                    Click="Save_Click"/>
+            <Button Content="❌ إلغاء" Background="#F44336" Foreground="White"
+                    Width="100" Height="40" Margin="10" FontSize="16"
+                    Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

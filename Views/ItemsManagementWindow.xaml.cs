@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ETAG_ERP.Models;
 
 namespace ETAG_ERP.Views
 {

@@ -1,21 +1,100 @@
-MIT License
+E-TAG COMMERCIAL LICENSE
+Version 2.4, December 2024
 
-Copyright (c) 2025 ehspos57-prog
+Copyright (c) 2024 ExtraTech Globe / E-Tag
+All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. DEFINITIONS
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+"License" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
+
+"Licensor" shall mean the copyright owner or entity granting the License.
+
+"Legal Entity" shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
+
+"You" (or "Your") shall mean an individual or Legal Entity exercising permissions granted by this License.
+
+"Source" shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
+
+"Object" shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
+
+"Work" shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work.
+
+"Derivative Works" shall mean any work, whether in Source or Object form, that is based upon (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship.
+
+2. GRANT OF COPYRIGHT LICENSE
+
+Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to use, reproduce, modify, merge, publish, distribute, sublicense, and/or sell copies of the Work, and to permit persons to whom the Work is furnished to do so, subject to the following conditions:
+
+3. COMMERCIAL USE RESTRICTIONS
+
+3.1 INTERNAL USE
+You may use the Work for internal business purposes within your organization without additional licensing fees.
+
+3.2 COMMERCIAL DEPLOYMENT
+You may deploy the Work commercially under the E-Tag/ExtraTech Globe brand with written permission from the Licensor.
+
+3.3 REDISTRIBUTION RESTRICTIONS
+You may NOT redistribute, resell, or sublicense the Work to third parties without explicit written permission from ExtraTech Globe/E-Tag.
+
+3.4 MODIFICATION RESTRICTIONS
+You may modify the Work for internal use, but any modifications that change the core functionality require approval from the Licensor.
+
+4. ATTRIBUTION REQUIREMENTS
+
+4.1 COPYRIGHT NOTICE
+You must retain all copyright notices and this license notice in all copies or substantial portions of the Work.
+
+4.2 BRANDING
+When using the Work commercially, you must maintain the E-Tag/ExtraTech Globe branding and attribution.
+
+4.3 CREDITS
+You must include appropriate credits to ExtraTech Globe/E-Tag in any documentation, marketing materials, or user interfaces.
+
+5. SUPPORT AND MAINTENANCE
+
+5.1 TECHNICAL SUPPORT
+Technical support is available through ExtraTech Globe's official channels:
+- Email: michael@extratechglobe.com
+- Phone: +20-111-311-5611
+- Website: www.extratechglobe.com
+
+5.2 UPDATES
+Updates and bug fixes are provided at the discretion of ExtraTech Globe/E-Tag.
+
+6. WARRANTY DISCLAIMER
+
+THE WORK IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.
+
+7. LIMITATION OF LIABILITY
+
+IN NO EVENT AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE, UNLESS REQUIRED BY APPLICABLE LAW (SUCH AS DELIBERATE AND GROSSLY NEGLIGENT ACTS) OR AGREED TO IN WRITING, SHALL ANY CONTRIBUTOR BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER ARISING AS A RESULT OF THIS LICENSE OR OUT OF THE USE OR INABILITY TO USE THE WORK (INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF GOODWILL, WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER COMMERCIAL DAMAGES OR LOSSES), EVEN IF SUCH CONTRIBUTOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+8. TERMINATION
+
+This License and the rights granted hereunder will terminate automatically if You fail to comply with terms herein and fail to cure such breach within 30 days of becoming aware of the breach. Provisions which, by their nature, must remain in effect beyond the termination of this License shall survive.
+
+9. GOVERNING LAW
+
+This License shall be governed by the laws of the Arab Republic of Egypt, without regard to its conflict of law provisions. Any disputes arising from this License shall be resolved in the courts of Alexandria, Egypt.
+
+10. CONTACT INFORMATION
+
+For questions about this License, please contact:
+
+ExtraTech Globe / E-Tag
+Email: michael@extratechglobe.com
+Phone: +20-111-311-5611
+Website: www.extratechglobe.com
+Address: Alexandria Governorate, Egypt
+
+---
+
+END OF TERMS AND CONDITIONS
+
+By using this software, you agree to be bound by the terms of this E-Tag Commercial License.
+
+
+

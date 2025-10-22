@@ -1,0 +1,436 @@
+<UserControl x:Class="ETAG_ERP.Views.CompanySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ETAG_ERP.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="1200"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/ModernArabicTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Company Settings Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="إعدادات الشركة" Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="إدارة معلومات الشركة والإعدادات العامة" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Foreground="{StaticResource SecondaryTextColor}"/>
+        </StackPanel>
+
+        <!-- Company Settings Content -->
+        <TabControl Grid.Row="1" Style="{StaticResource MaterialDesignTabControl}">
+            <!-- Company Information Tab -->
+            <TabItem Header="معلومات الشركة">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <!-- Basic Company Information -->
+                        <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="المعلومات الأساسية" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Company Name -->
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,15,15">
+                                        <TextBlock Text="اسم الشركة *" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding CompanyName}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="اسم الشركة باللغة العربية"/>
+                                    </StackPanel>
+
+                                    <!-- Company Name (English) -->
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,15">
+                                        <TextBlock Text="اسم الشركة (إنجليزي)" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding CompanyNameEn}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="Company Name in English"/>
+                                    </StackPanel>
+
+                                    <!-- Tax Number -->
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,15,15">
+                                        <TextBlock Text="الرقم الضريبي *" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding TaxNumber}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="الرقم الضريبي"/>
+                                    </StackPanel>
+
+                                    <!-- Commercial Record -->
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,0,15">
+                                        <TextBlock Text="رقم السجل التجاري *" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding CommercialRecord}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="رقم السجل التجاري"/>
+                                    </StackPanel>
+
+                                    <!-- Address -->
+                                    <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,15,15">
+                                        <TextBlock Text="العنوان *" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding Address}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="عنوان الشركة"/>
+                                    </StackPanel>
+
+                                    <!-- Phone -->
+                                    <StackPanel Grid.Column="1" Grid.Row="2" Margin="0,0,0,15">
+                                        <TextBlock Text="رقم الهاتف *" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding Phone}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="رقم الهاتف"/>
+                                    </StackPanel>
+
+                                    <!-- Email -->
+                                    <StackPanel Grid.Column="0" Grid.Row="3" Margin="0,0,15,15">
+                                        <TextBlock Text="البريد الإلكتروني *" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding Email}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="البريد الإلكتروني"/>
+                                    </StackPanel>
+
+                                    <!-- Website -->
+                                    <StackPanel Grid.Column="1" Grid.Row="3" Margin="0,0,0,15">
+                                        <TextBlock Text="الموقع الإلكتروني" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding Website}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="الموقع الإلكتروني"/>
+                                    </StackPanel>
+
+                                    <!-- Logo Path -->
+                                    <StackPanel Grid.Column="0" Grid.Row="4" Margin="0,0,15,15">
+                                        <TextBlock Text="مسار الشعار" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" Text="{Binding LogoPath}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                     materialDesign:HintAssist.Hint="مسار ملف الشعار"/>
+                                            <Button Grid.Column="1" Content="تصفح" Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    Margin="10,0,0,0" Click="BrowseLogo_Click"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <!-- Currency -->
+                                    <StackPanel Grid.Column="1" Grid.Row="4" Margin="0,0,0,15">
+                                        <TextBlock Text="العملة الافتراضية" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding Currency}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="العملة الافتراضية">
+                                            <ComboBoxItem Content="ريال سعودي (ر.س)"/>
+                                            <ComboBoxItem Content="جنيه مصري (ج.م)"/>
+                                            <ComboBoxItem Content="دولار أمريكي ($)"/>
+                                            <ComboBoxItem Content="يورو (€)"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Button Content="حفظ المعلومات" Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Margin="0,20,0,0" HorizontalAlignment="Left" Click="SaveCompanyInfo_Click"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Business Settings -->
+                        <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="إعدادات الأعمال" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Default Tax Rate -->
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,15,15">
+                                        <TextBlock Text="معدل الضريبة الافتراضي (%)" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding DefaultTaxRate}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="معدل الضريبة"/>
+                                    </StackPanel>
+
+                                    <!-- Invoice Prefix -->
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,15">
+                                        <TextBlock Text="بادئة الفواتير" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding InvoicePrefix}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="بادئة الفواتير"/>
+                                    </StackPanel>
+
+                                    <!-- Auto Backup -->
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,15,15">
+                                        <CheckBox Content="النسخ الاحتياطي التلقائي" IsChecked="{Binding AutoBackup}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+
+                                    <!-- Email Notifications -->
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,0,15">
+                                        <CheckBox Content="إشعارات البريد الإلكتروني" IsChecked="{Binding EmailNotifications}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+
+                                    <!-- Backup Path -->
+                                    <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,15,0">
+                                        <TextBlock Text="مسار النسخ الاحتياطي" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" Text="{Binding BackupPath}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                     materialDesign:HintAssist.Hint="مسار النسخ الاحتياطي"/>
+                                            <Button Grid.Column="1" Content="تصفح" Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    Margin="10,0,0,0" Click="BrowseBackupPath_Click"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <!-- Backup Frequency -->
+                                    <StackPanel Grid.Column="1" Grid.Row="2">
+                                        <TextBlock Text="تكرار النسخ الاحتياطي" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding BackupFrequency}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="تكرار النسخ الاحتياطي">
+                                            <ComboBoxItem Content="يومي"/>
+                                            <ComboBoxItem Content="أسبوعي"/>
+                                            <ComboBoxItem Content="شهري"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Button Content="حفظ الإعدادات" Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Margin="0,20,0,0" HorizontalAlignment="Left" Click="SaveBusinessSettings_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tax Settings Tab -->
+            <TabItem Header="الإعدادات الضريبية">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <!-- Tax Configuration -->
+                        <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="إعدادات الضرائب" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- VAT Rate -->
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,15,15">
+                                        <TextBlock Text="معدل ضريبة القيمة المضافة (%)" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding VATRate}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="معدل ضريبة القيمة المضافة"/>
+                                    </StackPanel>
+
+                                    <!-- Income Tax Rate -->
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,15">
+                                        <TextBlock Text="معدل ضريبة الدخل (%)" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding IncomeTaxRate}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="معدل ضريبة الدخل"/>
+                                    </StackPanel>
+
+                                    <!-- Tax Authority -->
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,15,15">
+                                        <TextBlock Text="مصلحة الضرائب" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding TaxAuthority}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="مصلحة الضرائب">
+                                            <ComboBoxItem Content="مصلحة الضرائب المصرية"/>
+                                            <ComboBoxItem Content="هيئة الزكاة والضريبة السعودية"/>
+                                            <ComboBoxItem Content="دائرة ضريبة الدخل الأردنية"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Tax Year -->
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,0,15">
+                                        <TextBlock Text="السنة الضريبية" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding TaxYear}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="السنة الضريبية"/>
+                                    </StackPanel>
+
+                                    <!-- Auto Tax Calculation -->
+                                    <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,15,15">
+                                        <CheckBox Content="حساب الضرائب تلقائياً" IsChecked="{Binding AutoTaxCalculation}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+
+                                    <!-- Tax Reporting -->
+                                    <StackPanel Grid.Column="1" Grid.Row="2" Margin="0,0,0,15">
+                                        <CheckBox Content="التقارير الضريبية التلقائية" IsChecked="{Binding AutoTaxReporting}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+
+                                    <!-- Tax Portal Integration -->
+                                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3">
+                                        <TextBlock Text="تكامل البوابة الضريبية" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                                   Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                                        <CheckBox Content="تفعيل التكامل مع البوابة الإلكترونية للضرائب" IsChecked="{Binding TaxPortalIntegration}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Button Content="حفظ الإعدادات الضريبية" Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Margin="0,20,0,0" HorizontalAlignment="Left" Click="SaveTaxSettings_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- System Settings Tab -->
+            <TabItem Header="إعدادات النظام">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <!-- System Configuration -->
+                        <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="إعدادات النظام" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Language -->
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,15,15">
+                                        <TextBlock Text="اللغة الافتراضية" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding DefaultLanguage}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="اللغة الافتراضية">
+                                            <ComboBoxItem Content="العربية"/>
+                                            <ComboBoxItem Content="English"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Theme -->
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,15">
+                                        <TextBlock Text="الثيم الافتراضي" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding DefaultTheme}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="الثيم الافتراضي">
+                                            <ComboBoxItem Content="فاتح"/>
+                                            <ComboBoxItem Content="داكن"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Date Format -->
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,15,15">
+                                        <TextBlock Text="تنسيق التاريخ" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding DateFormat}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="تنسيق التاريخ">
+                                            <ComboBoxItem Content="dd/MM/yyyy"/>
+                                            <ComboBoxItem Content="MM/dd/yyyy"/>
+                                            <ComboBoxItem Content="yyyy-MM-dd"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Time Format -->
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,0,15">
+                                        <TextBlock Text="تنسيق الوقت" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <ComboBox SelectedItem="{Binding TimeFormat}" Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                                  materialDesign:HintAssist.Hint="تنسيق الوقت">
+                                            <ComboBoxItem Content="12 ساعة"/>
+                                            <ComboBoxItem Content="24 ساعة"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Session Timeout -->
+                                    <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,15,15">
+                                        <TextBlock Text="مهلة الجلسة (دقيقة)" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding SessionTimeout}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="مهلة الجلسة"/>
+                                    </StackPanel>
+
+                                    <!-- Max Login Attempts -->
+                                    <StackPanel Grid.Column="1" Grid.Row="2" Margin="0,0,0,15">
+                                        <TextBlock Text="عدد محاولات تسجيل الدخول" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,5"/>
+                                        <TextBox Text="{Binding MaxLoginAttempts}" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                 materialDesign:HintAssist.Hint="عدد المحاولات"/>
+                                    </StackPanel>
+
+                                    <!-- Auto Logout -->
+                                    <StackPanel Grid.Column="0" Grid.Row="3" Margin="0,0,15,0">
+                                        <CheckBox Content="تسجيل الخروج التلقائي" IsChecked="{Binding AutoLogout}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+
+                                    <!-- Debug Mode -->
+                                    <StackPanel Grid.Column="1" Grid.Row="3">
+                                        <CheckBox Content="وضع التطوير" IsChecked="{Binding DebugMode}"
+                                                  Style="{StaticResource MaterialDesignCheckBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Button Content="حفظ إعدادات النظام" Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Margin="0,20,0,0" HorizontalAlignment="Left" Click="SaveSystemSettings_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
+
+
+

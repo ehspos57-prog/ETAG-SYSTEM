@@ -4,116 +4,387 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ETAG_ERP.Views"
-        Title="ETAG ERP - الشاشة الرئيسية"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="ETAG ERP - نظام إدارة المؤسسات المتكامل"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         mc:Ignorable="d"
-        Height="800" Width="1300" ResizeMode="CanResizeWithGrip">
+        Height="900" Width="1400" ResizeMode="CanResizeWithGrip"
+        FlowDirection="RightToLeft">
 
 
 
     <Window.Resources>
-        <Style x:Key="SidebarButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="10 5"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FF394867"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ModernArabicTheme.xaml"/>
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Green" SecondaryColor="Orange"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Modern Sidebar Button Style -->
+            <Style x:Key="ModernSidebarButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="20,16"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="FontFamily" Value="Segoe UI, Tahoma, Arial"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    Padding="{TemplateBinding Padding}"
+                                    CornerRadius="8"
+                                    Margin="8,2">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock Text="{TemplateBinding Content}" 
+                                             VerticalAlignment="Center"
+                                             Margin="8,0,0,0"/>
+                                    <materialDesign:PackIcon Kind="{TemplateBinding Tag}" 
+                                                           Width="20" Height="20"
+                                                           VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#60AD5E"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#2E7D32"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Modern Header Style -->
+            <Style x:Key="ModernHeader" TargetType="Border">
+                <Setter Property="Background" Value="#2E7D32"/>
+                <Setter Property="Height" Value="60"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="2" BlurRadius="8"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Status Indicator -->
+            <Style x:Key="StatusIndicator" TargetType="Ellipse">
+                <Setter Property="Width" Value="12"/>
+                <Setter Property="Height" Value="12"/>
+                <Setter Property="Fill" Value="#4CAF50"/>
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <!-- Main Container with Rounded Corners -->
+    <Border Background="#FAFAFA" CornerRadius="12" Margin="10">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="8" BlurRadius="20"/>
+        </Border.Effect>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- ✅ القائمة الجانبية مع Scroll -->
-        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
-            <StackPanel Grid.Column="0" Background="#2C3E50" Orientation="Vertical">
-                <TextBlock Text="ETAG ERP" Foreground="White" FontSize="24" FontWeight="Bold"
-                       Margin="10" HorizontalAlignment="Center"/>
+            <!-- Modern Sidebar -->
+            <Border Grid.Column="0" Style="{StaticResource ModernSidebar}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <Separator Margin="10"/>
+                    <!-- Sidebar Header -->
+                    <Border Grid.Row="0" Padding="20,20,20,10">
+                        <StackPanel>
+                            <TextBlock Text="ETAG ERP" 
+                                     Foreground="White" 
+                                     FontSize="28" 
+                                     FontWeight="Bold"
+                                     HorizontalAlignment="Center"
+                                     Margin="0,0,0,5"/>
+                            <TextBlock Text="نظام إدارة المؤسسات المتكامل" 
+                                     Foreground="#E0E0E0" 
+                                     FontSize="12" 
+                                     HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Navigation Menu -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="10,0,10,0">
+                        <StackPanel>
+                            <!-- Core Modules -->
+                            <TextBlock Text="الوحدات الأساسية" 
+                                     Foreground="#E0E0E0" 
+                                     FontSize="12" 
+                                     FontWeight="SemiBold"
+                                     Margin="20,20,20,10"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="لوحة التحكم" 
+                                  Tag="ViewDashboard"
+                                  Click="Dashboard_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="الأصناف والمخزون" 
+                                  Tag="Package"
+                                  Click="الأصناف_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="العملاء" 
+                                  Tag="AccountGroup"
+                                  Click="العملاء_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="المبيعات والفواتير" 
+                                  Tag="Receipt"
+                                  Click="فاتورة_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="المشتريات" 
+                                  Tag="Shopping"
+                                  Click="فاتورة_جديدة_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="الحسابات المالية" 
+                                  Tag="Calculator"
+                                  Click="الحسابات_Click"/>
+
+                            <!-- Advanced Modules -->
+                            <TextBlock Text="الوحدات المتقدمة" 
+                                     Foreground="#E0E0E0" 
+                                     FontSize="12" 
+                                     FontWeight="SemiBold"
+                                     Margin="20,30,20,10"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="إدارة المشاريع" 
+                                  Tag="ProjectorScreen"
+                                  Click="Projects_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="التصنيع" 
+                                  Tag="Factory"
+                                  Click="Manufacturing_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="الموارد البشرية" 
+                                  Tag="Account"
+                                  Click="HR_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="إدارة العملاء" 
+                                  Tag="AccountHeart"
+                                  Click="CRM_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="التقارير والتحليلات" 
+                                  Tag="ChartLine"
+                                  Click="تقارير_Click"/>
+
+                            <!-- Tax & Company -->
+                            <TextBlock Text="الضرائب والشركة" 
+                                     Foreground="#E0E0E0" 
+                                     FontSize="12" 
+                                     FontWeight="SemiBold"
+                                     Margin="20,30,20,10"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="البوابة الضريبية" 
+                                  Tag="Receipt"
+                                  Click="TaxPortal_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="إعدادات الشركة" 
+                                  Tag="Domain"
+                                  Click="CompanySettings_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="حول النظام" 
+                                  Tag="Information"
+                                  Click="About_Click"/>
+
+                            <!-- System -->
+                            <TextBlock Text="النظام" 
+                                     Foreground="#E0E0E0" 
+                                     FontSize="12" 
+                                     FontWeight="SemiBold"
+                                     Margin="20,30,20,10"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="الإعدادات" 
+                                  Tag="Cog"
+                                  Click="الإعدادات_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="اختبار النظام" 
+                                  Tag="TestTube"
+                                  Click="اختبار_النظام_Click"/>
+
+                            <Button Style="{StaticResource ModernSidebarButton}" 
+                                  Content="تسجيل خروج" 
+                                  Tag="Logout"
+                                  Click="إغلاق_Click"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Sidebar Footer -->
+                    <Border Grid.Row="2" Padding="20,10,20,20">
+                        <StackPanel>
+                            <Border Background="#60AD5E" CornerRadius="6" Padding="10,8">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Ellipse Style="{StaticResource StatusIndicator}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="متصل" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="© 2024 ExtraTech Globe / E-Tag" 
+                                     Foreground="#B0B0B0" 
+                                     FontSize="10" 
+                                     HorizontalAlignment="Center"
+                                     Margin="0,5,0,0"/>
+                            <TextBlock Text="ETAG ERP v2.4" 
+                                     Foreground="#B0B0B0" 
+                                     FontSize="10" 
+                                     HorizontalAlignment="Center"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
 
 
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📦 الأصناف" Click="الأصناف_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="👥 العملاء" Click="العملاء_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="🧾 الفواتير" Click="فاتورة_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📊 الحسابات" Click="الحسابات_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="🎯 عروض الأسعار" Click="عروض_الأسعار_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="🆕 تقارير" Click="تقارير_Click" Height="35"  Margin="5"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="🆕 إذن صرف" Click="فاتورة_جديدة_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📥 البوابة" Click="البوابة_Click" Height="35" Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📥 مصروفات" Click="Expenses_Click" Height="35"  Margin="3"/>
 
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="♻️ المرتجعات" Click="المرتجعات_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📨 فاتورة ضريبية" Click="إذن_الاستلام_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📄 مندوبين" Click="مندوبين_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📋 جرد المخزون" Click="جرد_المخزون_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="📈 كشف حساب" Click="كشف_حساب_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="🧪 اختبار النظام" Click="اختبار_النظام_Click" Height="35"  Margin="3"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="⚙️ الإعدادات" Click="الإعدادات_Click" Height="35"  Margin="5"/>
-                <Button Style="{StaticResource SidebarButtonStyle}" Content="🚪 تسجيل خروج" Click="إغلاق_Click" Height="35"  Margin="3" />
+            <!-- Main Content Area -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
+                <!-- Modern Header -->
+                <Border Grid.Row="0" Style="{StaticResource ModernHeader}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            </StackPanel>
-        </ScrollViewer>
+                        <!-- Header Content -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                            <TextBlock x:Name="HeaderTitle" 
+                                     Text="لوحة التحكم" 
+                                     Foreground="White" 
+                                     FontSize="24" 
+                                     FontWeight="SemiBold"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,20,0"/>
+                            <TextBlock x:Name="HeaderSubtitle" 
+                                     Text="مرحباً بك في نظام إدارة المؤسسات المتكامل" 
+                                     Foreground="#E0E0E0" 
+                                     FontSize="14"
+                                     VerticalAlignment="Center"/>
+                        </StackPanel>
 
+                        <!-- Header Actions -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                            <!-- Network Status -->
+                            <Border Background="#60AD5E" CornerRadius="12" Padding="12,6" Margin="0,0,10,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Style="{StaticResource StatusIndicator}" Margin="0,0,6,0"/>
+                                    <TextBlock Text="متصل" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
 
+                            <!-- User Info -->
+                            <Border Background="#60AD5E" CornerRadius="12" Padding="12,6" Margin="0,0,10,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Account" Width="16" Height="16" Foreground="White" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBlock x:Name="UserNameText" Text="المدير" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
 
-        <!-- ===== الواجهة الرئيسية (العرض الديناميكي) ===== -->
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- شريط علوي -->
-                <RowDefinition Height="*"/>
-                <!-- المنطقة الديناميكية -->
-                <RowDefinition Height="Auto"/>
-                <!-- الشريط السفلي -->
-            </Grid.RowDefinitions>
+                            <!-- Theme Toggle -->
+                            <Button Background="Transparent" 
+                                  BorderThickness="0" 
+                                  Padding="8" 
+                                  Margin="0,0,10,0"
+                                  Click="ToggleTheme_Click"
+                                  ToolTip="تبديل الثيم">
+                                <materialDesign:PackIcon Kind="ThemeLightDark" Width="20" Height="20" Foreground="White"/>
+                            </Button>
 
-            <!-- الشريط العلوي -->
-            <DockPanel Grid.Row="0" Background="#34495E" Margin="0,0,0,720" Grid.RowSpan="2">
-                <TextBlock Text="الرئيسية" Foreground="White" FontSize="18" Margin="10,0" DockPanel.Dock="Right" Width="59" Height="33"/>
+                            <!-- Window Controls -->
+                            <StackPanel Orientation="Horizontal">
+                                <Button Background="Transparent" 
+                                      BorderThickness="0" 
+                                      Padding="8" 
+                                      Click="Minimize_Click"
+                                      ToolTip="تصغير">
+                                    <materialDesign:PackIcon Kind="WindowMinimize" Width="16" Height="16" Foreground="White"/>
+                                </Button>
+                                <Button Background="Transparent" 
+                                      BorderThickness="0" 
+                                      Padding="8" 
+                                      Click="Maximize_Click"
+                                      ToolTip="تكبير">
+                                    <materialDesign:PackIcon Kind="WindowMaximize" Width="16" Height="16" Foreground="White"/>
+                                </Button>
+                                <Button Background="Transparent" 
+                                      BorderThickness="0" 
+                                      Padding="8" 
+                                      Click="Close_Click"
+                                      ToolTip="إغلاق">
+                                    <materialDesign:PackIcon Kind="WindowClose" Width="16" Height="16" Foreground="White"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-            </DockPanel>
-            <StackPanel VerticalAlignment="Bottom" Margin="10">
-                <TextBlock Text="© E-tag For EHS" Foreground="White" FontSize="10" Height="19"/>
-            </StackPanel>
-            <TextBlock Text="مرحبًا، في البرنامج" Foreground="White" FontSize="14" Margin="98,6,-78,714" Grid.RowSpan="2"/>
+                <!-- Main Content -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="#FAFAFA">
+                    <ContentControl x:Name="ContentArea" Margin="20">
+                        <ContentControl.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="0"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="0"/>
+                            </TransformGroup>
+                        </ContentControl.RenderTransform>
+                    </ContentControl>
+                </ScrollViewer>
 
-            <!-- المحتوى الديناميكي -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,25,0,0">
-                <ContentControl x:Name="ContentArea" RenderTransformOrigin="0.5,0.5" Margin="10" Height="705">
-                    <ContentControl.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform AngleX="0"/>
-                            <RotateTransform/>
-                            <TranslateTransform X="0"/>
-                        </TransformGroup>
-                    </ContentControl.RenderTransform>
-                </ContentControl>
+                <!-- Status Bar -->
+                <Border Grid.Row="2" Background="#F5F5F5" Height="30" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            </ScrollViewer>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                            <TextBlock x:Name="StatusText" Text="جاهز" Foreground="#666" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
 
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                            <TextBlock Text="ETAG ERP v2.0" Foreground="#999" FontSize="11" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

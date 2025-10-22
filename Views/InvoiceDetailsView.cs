@@ -1,4 +1,6 @@
-﻿namespace ETAG_ERP.Views
+﻿using ETAG_ERP.Models;
+
+namespace ETAG_ERP.Views
 {
     internal class InvoiceDetailsView
     {

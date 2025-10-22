@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using ETAG_ERP.Helpers;
+using ETAG_ERP.Models;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -65,7 +66,7 @@ namespace ETAG_ERP.Views
             try
             {
                 string filePath = $"Invoice_{Invoice.InvoiceNumber}.pdf";
-                FileHelper.ExportInvoiceToPdf(Invoice, filePath);
+                ETAG_ERP.Helpers.FileHelper.ExportInvoiceToPdf(Invoice, filePath);
                 MessageBox.Show($"تم حفظ الفاتورة في {filePath}", "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)

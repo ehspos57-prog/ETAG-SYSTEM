@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ETAG_ERP.Views // *** هام: هذا الـ Namespace يجب أن يتطابق مع الـ Namespace الرئيسي لمشروعك + اسم مجلد الـ ViewModels الخاص بك (Views) ***
+namespace ETAG_ERP.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

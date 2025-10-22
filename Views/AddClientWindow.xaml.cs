@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using ETAG_ERP.Models;
 
 namespace ETAG_ERP.Views
 {

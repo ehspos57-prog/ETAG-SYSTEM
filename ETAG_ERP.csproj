@@ -1,0 +1,121 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<!-- حذف ملفات غير ضرورية -->
+	<ItemGroup>
+		<Compile Remove="Infrastructure\API\**\*.cs" />
+		<Compile Remove="bشي يb\**" />
+		<EmbeddedResource Remove="bشي يb\**" />
+		<None Remove="bشي يb\**" />
+		<Page Remove="bشي يb\**" />
+	</ItemGroup>
+
+	<!-- ملفات إضافية -->
+	<ItemGroup>
+		<None Remove="123.ico" />
+		<None Remove="button_favorites.png" />
+		<None Remove="ChatGPT Image Jul 30, 2025, 05_29_51 PM.png" />
+		<None Remove="Database\etag.db" />
+		<None Remove="Database\etag.db.sql" />
+		<None Remove="etag.db" />
+	</ItemGroup>
+
+	<!-- تنظيم المجلدات -->
+	<ItemGroup>
+		<Folder Include="Assets\Background\" />
+		<Folder Include="Database\" />
+		<Folder Include="Data\" />
+		<Folder Include="packages\" />
+	</ItemGroup>
+
+	<!-- ✅ حزم NuGet المعتمدة والمستقرة -->
+	<ItemGroup>
+		<!-- Excel & Reporting -->
+		<PackageReference Include="ClosedXML" Version="0.105.0" />
+		<PackageReference Include="ClosedXML.Parser" Version="2.0.0" />
+		<PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+		<PackageReference Include="EPPlus" Version="8.2.0" />
+		<PackageReference Include="ExcelDataReader" Version="3.8.0" />
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
+		<PackageReference Include="FastReport.OpenSource" Version="2025.2.12" />
+		<PackageReference Include="FastReport.Data.SQLite" Version="2025.2.12" />
+		<PackageReference Include="FastReport.DataVisualization" Version="2025.2.12" />
+		<PackageReference Include="FastReport.Localization" Version="2025.2.12" />
+		<PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2025.2.12" />
+
+		<!-- PDF -->
+		<PackageReference Include="iTextSharp" Version="5.5.13.4" />
+
+		<!-- UI -->
+		<PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+
+		<!-- Database & ORM -->
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
+
+		<!-- SignalR -->
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.10" />
+
+		<!-- Dependency Injection & Logging (align to 9.0 to avoid NU1603) -->
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="9.0.0" />
+
+		<!-- Security & Auth -->
+		<PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="JWT" Version="9.0.3" />
+
+		<!-- Utils -->
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="MediatR" Version="12.4.1" />
+		<PackageReference Include="MongoDB.Driver.Core" Version="2.30.0" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+
+		<!-- Logging -->
+		<PackageReference Include="Serilog" Version="4.2.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="123.ico" />
+		<Resource Include="button_favorites.png" />
+		<Resource Include="ChatGPT Image Jul 30, 2025, 05_29_51 PM.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+</Project>

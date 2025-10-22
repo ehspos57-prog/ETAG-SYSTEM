@@ -1,0 +1,309 @@
+<UserControl x:Class="ETAG_ERP.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ETAG_ERP.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="1200"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/ModernArabicTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- About Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="حول النظام" Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="معلومات عن نظام ETAG ERP وشركة ExtraTech Globe" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Foreground="{StaticResource SecondaryTextColor}"/>
+        </StackPanel>
+
+        <!-- About Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Company Information -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="ExtraTech Globe / E-Tag" Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Company Details -->
+                            <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                <TextBlock Text="معلومات الشركة" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="اسم الشركة:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="ExtraTech Globe / E-Tag" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="المقر الرئيسي:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="محافظة الإسكندرية، مصر" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="الفروع:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="القاهرة، مصر - بوسطن، الولايات المتحدة" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="سنوات الخبرة:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="أكثر من 10 سنوات" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Contact Information -->
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="معلومات التواصل" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Email" Width="16" Height="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="michael@extratechglobe.com" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Phone" Width="16" Height="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="+20-111-311-5611" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Web" Width="16" Height="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="www.extratechglobe.com" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="EmailOutline" Width="16" Height="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="extratechglobe@gmail.com" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Vision & Mission -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="الرؤية والرسالة" Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Vision -->
+                            <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                <TextBlock Text="الرؤية" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                                <TextBlock Text="&quot;استكشف. وسع. كل شيء.&quot;" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" FontStyle="Italic" TextWrapping="Wrap"/>
+                                <TextBlock Text="Explore. Expand. Everything." Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource SecondaryTextColor}" FontStyle="Italic" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                            </StackPanel>
+
+                            <!-- Mission -->
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="الرسالة" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                                <TextBlock Text="&quot;تحويل الأعمال بحلول إلكترونية ذكية — ابتكر. ارتق. ساد العالم الرقمي.&quot;" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource PrimaryTextColor}" FontStyle="Italic" TextWrapping="Wrap"/>
+                                <TextBlock Text="Transforming businesses with smart E-solutions — Innovate. Elevate. Dominate the Digital World." Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource SecondaryTextColor}" FontStyle="Italic" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Services -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="خدماتنا" Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Services List -->
+                            <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Domain" Width="20" Height="20" Foreground="{StaticResource PrimaryColor}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="أنظمة ERP وIT ذكية" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Robot" Width="20" Height="20" Foreground="{StaticResource PrimaryColor}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="تكامل الذكاء الاصطناعي وأتمتة البيانات" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Code" Width="20" Height="20" Foreground="{StaticResource PrimaryColor}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="هندسة البرمجيات والتصميم المتقدم" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="ChartLine" Width="20" Height="20" Foreground="{StaticResource PrimaryColor}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="الاستراتيجية الرقمية والاستشارات" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Marketing" Width="20" Height="20" Foreground="{StaticResource PrimaryColor}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="حلول التسويق الرقمي" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="Cog" Width="20" Height="20" Foreground="{StaticResource PrimaryColor}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="حلول تقنية متخصصة" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- System Information -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="معلومات النظام" Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- System Details -->
+                            <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="اسم النظام:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="ETAG ERP System" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="الإصدار:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="2.4.0" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="تاريخ الإصدار:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="ديسمبر 2024" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="المنصة:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="Windows WPF (.NET 8)" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Technical Details -->
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="قاعدة البيانات:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="SQLite / SQL Server / PostgreSQL" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="واجهة المستخدم:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="Material Design 5.x" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="اللغة:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="العربية (RTL) / English" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="الترخيص:" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource SecondaryTextColor}" Width="120"/>
+                                    <TextBlock Text="E-Tag Commercial License" Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Foreground="{StaticResource PrimaryTextColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Copyright -->
+                <Border Style="{StaticResource ModernCard}">
+                    <StackPanel>
+                        <TextBlock Text="حقوق الطبع والنشر" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,10"/>
+                        
+                        <TextBlock Text="© 2024 ExtraTech Globe / E-Tag. جميع الحقوق محفوظة." Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" HorizontalAlignment="Center"/>
+                        
+                        <TextBlock Text="© 2024 ExtraTech Globe / E-Tag. All rights reserved." Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                   Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        
+                        <TextBlock Text="تحويل الأعمال بحلول إلكترونية ذكية — ابتكر. ارتق. ساد العالم الرقمي." Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                   Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" Margin="0,10,0,0" FontStyle="Italic"/>
+                        
+                        <TextBlock Text="Transforming businesses with smart E-solutions — Innovate. Elevate. Dominate the Digital World." Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                   Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" FontStyle="Italic"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
+
+
+

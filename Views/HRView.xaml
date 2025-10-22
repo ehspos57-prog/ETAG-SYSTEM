@@ -1,0 +1,125 @@
+<UserControl x:Class="ETAG_ERP.Views.HRView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ETAG_ERP.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="1200"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/ModernArabicTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HR Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="إدارة الموارد البشرية" Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="إدارة شاملة للموظفين، الرواتب، والحضور" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Foreground="{StaticResource SecondaryTextColor}"/>
+        </StackPanel>
+
+        <!-- HR Content -->
+        <TabControl Grid.Row="1" Style="{StaticResource MaterialDesignTabControl}">
+            <!-- Employee Management Tab -->
+            <TabItem Header="إدارة الموظفين">
+                <Border Style="{StaticResource ModernCard}" Margin="10">
+                    <StackPanel>
+                        <TextBlock Text="قائمة الموظفين" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                        <!-- Employee DataGrid -->
+                        <DataGrid ItemsSource="{Binding Employees}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                                  Style="{StaticResource MaterialDesignDataGrid}"
+                                  Height="400">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="الاسم الكامل" Binding="{Binding FullName}" Width="*"/>
+                                <DataGridTextColumn Header="المسمى الوظيفي" Binding="{Binding JobTitle}" Width="*"/>
+                                <DataGridTextColumn Header="القسم" Binding="{Binding Department}" Width="*"/>
+                                <DataGridTextColumn Header="تاريخ التعيين" Binding="{Binding HireDate, StringFormat='yyyy-MM-dd'}" Width="Auto"/>
+                                <DataGridTextColumn Header="الراتب" Binding="{Binding Salary, StringFormat='C'}" Width="Auto"/>
+                                <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="Auto"/>
+                                <DataGridTemplateColumn Header="الإجراءات" Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="تعديل" Style="{StaticResource MaterialDesignFlatButton}" Margin="0,0,5,0"/>
+                                                <Button Content="حذف" Style="{StaticResource MaterialDesignFlatButton}" Foreground="Red"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="إضافة موظف جديد" Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- Payroll Management Tab -->
+            <TabItem Header="إدارة الرواتب">
+                <Border Style="{StaticResource ModernCard}" Margin="10">
+                    <StackPanel>
+                        <TextBlock Text="سجلات الرواتب" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                        <!-- Payroll DataGrid -->
+                        <DataGrid ItemsSource="{Binding Payrolls}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                                  Style="{StaticResource MaterialDesignDataGrid}"
+                                  Height="400">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="الموظف" Binding="{Binding Employee.FullName}" Width="*"/>
+                                <DataGridTextColumn Header="بداية الفترة" Binding="{Binding PayPeriodStart, StringFormat='yyyy-MM-dd'}" Width="Auto"/>
+                                <DataGridTextColumn Header="نهاية الفترة" Binding="{Binding PayPeriodEnd, StringFormat='yyyy-MM-dd'}" Width="Auto"/>
+                                <DataGridTextColumn Header="الراتب الإجمالي" Binding="{Binding GrossSalary, StringFormat='C'}" Width="Auto"/>
+                                <DataGridTextColumn Header="الاستقطاعات" Binding="{Binding Deductions, StringFormat='C'}" Width="Auto"/>
+                                <DataGridTextColumn Header="الراتب الصافي" Binding="{Binding NetSalary, StringFormat='C'}" Width="Auto"/>
+                                <DataGridTextColumn Header="تاريخ الدفع" Binding="{Binding PayDate, StringFormat='yyyy-MM-dd'}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="إنشاء كشف رواتب جديد" Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- Attendance Management Tab -->
+            <TabItem Header="إدارة الحضور">
+                <Border Style="{StaticResource ModernCard}" Margin="10">
+                    <StackPanel>
+                        <TextBlock Text="سجلات الحضور والانصراف" Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                   Foreground="{StaticResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                        <!-- Attendance DataGrid -->
+                        <DataGrid ItemsSource="{Binding Attendances}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                                  Style="{StaticResource MaterialDesignDataGrid}"
+                                  Height="400">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="الموظف" Binding="{Binding Employee.FullName}" Width="*"/>
+                                <DataGridTextColumn Header="التاريخ" Binding="{Binding Date, StringFormat='yyyy-MM-dd'}" Width="Auto"/>
+                                <DataGridTextColumn Header="وقت الحضور" Binding="{Binding CheckInTime, StringFormat='HH:mm'}" Width="Auto"/>
+                                <DataGridTextColumn Header="وقت الانصراف" Binding="{Binding CheckOutTime, StringFormat='HH:mm'}" Width="Auto"/>
+                                <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="تسجيل حضور/انصراف" Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

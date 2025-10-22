@@ -1,0 +1,83 @@
+<Window x:Class="ETAG_ERP.Views.ItemsReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="تقرير الأصناف" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- العنوان -->
+        <TextBlock Grid.Row="0" Text="{Binding ReportTitle}" 
+                   FontSize="24" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- جدول التقرير -->
+        <DataGrid Grid.Row="1" x:Name="ReportDataGrid" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="الكود" Binding="{Binding ItemCode}" Width="100"/>
+                <DataGridTextColumn Header="اسم الصنف" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="الوصف" Binding="{Binding Description}" Width="150"/>
+                <DataGridTextColumn Header="سعر البيع" Binding="{Binding SellPrice, StringFormat=C}" Width="100"/>
+                <DataGridTextColumn Header="سعر الشراء" Binding="{Binding CostPrice, StringFormat=C}" Width="100"/>
+                <DataGridTextColumn Header="الكمية" Binding="{Binding Quantity}" Width="80"/>
+                <DataGridTextColumn Header="الوحدة" Binding="{Binding Unit}" Width="80"/>
+                <DataGridTextColumn Header="القيمة الإجمالية" Binding="{Binding TotalValue, StringFormat=C}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- ملخص التقرير -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="0,20,0,0">
+            <TextBlock FontWeight="Bold" Margin="10">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="عدد الأصناف: {0}">
+                        <Binding Path="ItemsCount"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock FontWeight="Bold" Margin="10">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="القيمة الإجمالية: {0:C}">
+                        <Binding Path="TotalValue"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock FontWeight="Bold" Margin="10">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="متوسط السعر: {0:C}">
+                        <Binding Path="AveragePrice"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- الأزرار -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="🖨️ طباعة" Background="#2196F3" Foreground="White"
+                    Width="100" Height="35" Margin="10" FontSize="14"
+                    Click="Print_Click"/>
+            <Button Content="📄 تصدير PDF" Background="#FF5722" Foreground="White"
+                    Width="120" Height="35" Margin="10" FontSize="14"
+                    Click="ExportPdf_Click"/>
+            <Button Content="📊 تصدير Excel" Background="#4CAF50" Foreground="White"
+                    Width="120" Height="35" Margin="10" FontSize="14"
+                    Click="ExportExcel_Click"/>
+            <Button Content="❌ إغلاق" Background="#9E9E9E" Foreground="White"
+                    Width="100" Height="35" Margin="10" FontSize="14"
+                    Click="Close_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

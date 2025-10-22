@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using ETAG_ERP.Models;
+using ETAG_ERP.Views;
+using ETAG_ERP.Helpers;
 
 namespace ETAG_ERP
 {
@@ -47,7 +50,7 @@ namespace ETAG_ERP
 
 #if DEBUG
             // فتح MainWindow مباشرة في وضع التطوير
-            var mainWindow = new MainWindow();
+            var mainWindow = new Views.MainWindow();
             mainWindow.Show();
             this.MainWindow = mainWindow;
 #else
