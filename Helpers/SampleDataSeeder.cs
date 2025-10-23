@@ -438,7 +438,7 @@ namespace ETAG_ERP.Helpers
                         PurchaseNumber = "PUR001",
                         Supplier = "مورد المعدات الهيدروليكية",
                         Date = DateTime.Now.AddDays(-10),
-                        Total = 15000.00m,
+                        Total = (double)15000.00m,
                         Paid = true,
                         Notes = "شراء معدات هيدروليكية",
                         CreatedAt = DateTime.Now.AddDays(-10),
@@ -449,7 +449,7 @@ namespace ETAG_ERP.Helpers
                         PurchaseNumber = "PUR002",
                         Supplier = "شركة قطع الغيار",
                         Date = DateTime.Now.AddDays(-7),
-                        Total = 5000.00m,
+                        Total = (double)5000.00m,
                         Paid = true,
                         Notes = "شراء قطع غيار",
                         CreatedAt = DateTime.Now.AddDays(-7),
@@ -526,5 +526,9 @@ namespace ETAG_ERP.Helpers
             }
         }
 
+        internal static void Initialize()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

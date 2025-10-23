@@ -583,14 +583,14 @@ namespace ETAG_ERP.Helpers
                 }
 
                 // Get database size
-                var dbFile = new FileInfo(DatabaseHelper.DatabasePath);
+                var dbFile = new FileInfo((string)DatabaseHelper.DatabasePath);
                 if (dbFile.Exists)
                 {
                     stats.DatabaseSizeBytes = dbFile.Length;
                 }
 
                 // Get last backup date
-                var backupPath = Path.Combine(Path.GetDirectoryName(DatabaseHelper.DatabasePath), "backup");
+                var backupPath = Path.Combine(Path.GetDirectoryName((string?)DatabaseHelper.DatabasePath), "backup");
                 if (Directory.Exists(backupPath))
                 {
                     var backupFiles = Directory.GetFiles(backupPath, "*.db");

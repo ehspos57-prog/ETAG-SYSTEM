@@ -7,6 +7,7 @@ using System.Windows;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using ClosedXML.Excel;
+using System.Data;
 
 namespace ETAG_ERP.Helpers
 {
@@ -21,7 +22,7 @@ namespace ETAG_ERP.Helpers
             {
                 using (var document = new Document(PageSize.A4, 20, 20, 20, 20))
                 {
-                    using (var writer = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create)))
+                    using (var writer = Models.PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create)))
                     {
                         document.Open();
 

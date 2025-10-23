@@ -102,30 +102,31 @@ namespace ETAG_ERP.Helpers
                 System.Data.SQLite.SQLiteException sqlEx => GetSQLiteErrorMessage(sqlEx),
                 System.IO.FileNotFoundException => "الملف المطلوب غير موجود. يرجى التحقق من المسار.",
                 System.IO.DirectoryNotFoundException => "المجلد المطلوب غير موجود. يرجى التحقق من المسار.",
-                System.IO.IOException => "خطأ في الوصول للملف. تأكد من أن الملف غير مفتوح في برنامج آخر.",
+                System.IO.IOException ioEx => "خطأ في الوصول للملف. تأكد من أن الملف غير مفتوح في برنامج آخر.",
                 System.UnauthorizedAccessException => "ليس لديك صلاحية للوصول لهذا الملف أو المجلد.",
                 System.OutOfMemoryException => "الذاكرة غير كافية. يرجى إغلاق بعض البرامج والمحاولة مرة أخرى.",
-                System.ArgumentException => "البيانات المدخلة غير صحيحة. يرجى التحقق من القيم المدخلة.",
                 System.ArgumentNullException => "قيمة مطلوبة مفقودة. يرجى ملء جميع الحقول المطلوبة.",
+                System.ArgumentException => "البيانات المدخلة غير صحيحة. يرجى التحقق من القيم المدخلة.",
                 System.InvalidOperationException => "عملية غير صحيحة. يرجى المحاولة مرة أخرى.",
                 System.NotSupportedException => "هذه العملية غير مدعومة في النظام الحالي.",
                 System.TimeoutException => "انتهت مهلة العملية. يرجى المحاولة مرة أخرى.",
                 System.Net.NetworkInformation.NetworkInformationException => "خطأ في الاتصال بالشبكة. تأكد من اتصال الإنترنت.",
                 _ => $"حدث خطأ غير متوقع: {ex.Message}"
             };
+
         }
 
         private static string GetSQLiteErrorMessage(System.Data.SQLite.SQLiteException ex)
         {
             return ex.ResultCode switch
             {
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_CONSTRAINT => "انتهاك قيود قاعدة البيانات. تأكد من صحة البيانات المدخلة.",
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_BUSY => "قاعدة البيانات مشغولة. يرجى المحاولة مرة أخرى.",
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_LOCKED => "قاعدة البيانات مقفلة. تأكد من إغلاق جميع النوافذ الأخرى.",
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_CORRUPT => "قاعدة البيانات تالفة. يرجى استعادة نسخة احتياطية.",
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_FULL => "قاعدة البيانات ممتلئة. يرجى تنظيف البيانات القديمة.",
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_CANTOPEN => "لا يمكن فتح قاعدة البيانات. تأكد من الصلاحيات.",
-                System.Data.SQLite.SQLiteErrorCode.SQLITE_READONLY => "قاعدة البيانات للقراءة فقط. لا يمكن التعديل.",
+                System.Data.SQLite.SQLiteErrorCode.Constraint => "انتهاك قيود قاعدة البيانات. تأكد من صحة البيانات المدخلة.",
+                System.Data.SQLite.SQLiteErrorCode.Busy => "قاعدة البيانات مشغولة. يرجى المحاولة مرة أخرى.",
+                System.Data.SQLite.SQLiteErrorCode.Locked => "قاعدة البيانات مقفلة. تأكد من إغلاق جميع النوافذ الأخرى.",
+                System.Data.SQLite.SQLiteErrorCode.Corrupt => "قاعدة البيانات تالفة. يرجى استعادة نسخة احتياطية.",
+                System.Data.SQLite.SQLiteErrorCode.Full => "قاعدة البيانات ممتلئة. يرجى تنظيف البيانات القديمة.",
+                System.Data.SQLite.SQLiteErrorCode.CantOpen => "لا يمكن فتح قاعدة البيانات. تأكد من الصلاحيات.",
+                System.Data.SQLite.SQLiteErrorCode.ReadOnly => "قاعدة البيانات للقراءة فقط. لا يمكن التعديل.",
                 _ => $"خطأ في قاعدة البيانات: {ex.Message}"
             };
         }
@@ -292,5 +293,24 @@ namespace ETAG_ERP.Helpers
             }
         }
 
+        internal static void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void LogError(Exception ex, string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void LogError(string v, string v1)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void LogError(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

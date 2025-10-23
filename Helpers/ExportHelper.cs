@@ -100,7 +100,7 @@ namespace ETAG_ERP.Helpers
                 {
                     using (var document = new Document(PageSize.A4.Rotate(), 20, 20, 20, 20))
                     {
-                        using (var writer = PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create)))
+                        using (var writer = Models.PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create)))
                         {
                             document.Open();
 

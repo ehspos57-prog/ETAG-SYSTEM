@@ -378,6 +378,13 @@ namespace ETAG_ERP.Helpers
                 ClearCache();
             }, $"Batch Insert: {tableName} ({items.Count} items)");
         }
+        public static void MeasureExecutionTime(Action action, string description)
+        {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            action();
+            stopwatch.Stop();
+            Console.WriteLine($"{description} took {stopwatch.ElapsedMilliseconds} ms");
+        }
 
         /// <summary>
         /// Optimize database connection

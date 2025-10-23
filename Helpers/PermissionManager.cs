@@ -59,6 +59,8 @@ namespace ETAG_ERP.Helpers
         private static User? _currentUser;
         private static List<Permission> _allPermissions = new List<Permission>();
 
+        public static bool IsInitialized { get; internal set; }
+
         /// <summary>
         /// Initialize permission manager
         /// </summary>
@@ -509,6 +511,27 @@ namespace ETAG_ERP.Helpers
             {
                 // Ignore logging errors
             }
+        }
+
+        internal static string GetPermissionDisplayName(Permission permission)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static object GetCurrentUserPermissions()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool HasPermission(User selectedUser, Permission permission)
+        {
+            throw new NotImplementedException();
+        }
+
+        public class Permission
+        {
+            public string Name { get; internal set; }
+            public int Id { get; internal set; }
         }
     }
 }

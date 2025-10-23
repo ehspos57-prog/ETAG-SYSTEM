@@ -183,7 +183,7 @@ namespace ETAG_ERP.Helpers
                 dataGrid.Foreground = new SolidColorBrush(Colors.White);
                 dataGrid.AlternatingRowBackground = new SolidColorBrush(Color.FromRgb(45, 45, 45));
                 dataGrid.RowBackground = new SolidColorBrush(Color.FromRgb(58, 58, 58));
-                dataGrid.GridLinesBrush = new SolidColorBrush(Color.FromRgb(74, 74, 74));
+                dataGrid.VerticalGridLinesBrush = new SolidColorBrush(Color.FromRgb(74, 74, 74));
             }
             else
             {
@@ -191,7 +191,7 @@ namespace ETAG_ERP.Helpers
                 dataGrid.Foreground = new SolidColorBrush(Colors.Black);
                 dataGrid.AlternatingRowBackground = new SolidColorBrush(Color.FromRgb(248, 249, 250));
                 dataGrid.RowBackground = new SolidColorBrush(Colors.White);
-                dataGrid.GridLinesBrush = new SolidColorBrush(Color.FromRgb(224, 224, 224));
+                dataGrid.VerticalGridLinesBrush = new SolidColorBrush(Color.FromRgb(224, 224, 224));
             }
         }
 
@@ -305,6 +305,11 @@ namespace ETAG_ERP.Helpers
         {
             var color = GetThemeColor(brushName);
             return new SolidColorBrush(color);
+        }
+
+        internal static void Initialize()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -12,6 +12,7 @@ public static class DatabaseHelper
 
 
     public static string ConnectionString { get; internal set; }
+    public static object DatabasePath { get; internal set; }
 
     public static void SetDatabasePath(string path)
     {
@@ -609,7 +610,7 @@ public static class DatabaseHelper
     {
         string sql = @"INSERT INTO Branches (Name, Address, Phone, Type, IsActive, CreatedAt, CreatedBy) 
                        VALUES (@Name,@Address,@Phone,@Type,@IsActive,@CreatedAt,@CreatedBy);";
-        ExecuteNonQuery(sql,
+        var unused = ExecuteNonQuery(sql,
             new SQLiteParameter("@Name", b.Name ?? ""),
             new SQLiteParameter("@Address", b.Address ?? ""),
             new SQLiteParameter("@Phone", b.Phone ?? ""),
@@ -629,7 +630,6 @@ public static class DatabaseHelper
             new SQLiteParameter("@Type", b.Type ?? ""),
             new SQLiteParameter("@IsActive", b.IsActive ? 1 : 0),
             new SQLiteParameter("@UpdatedAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-            new SQLiteParameter("@UpdatedBy", b.UpdatedBy ?? ""),
             new SQLiteParameter("@Id", b.Id));
     }
 
@@ -1280,7 +1280,6 @@ public static class DatabaseHelper
         Id = Convert.ToInt32(row["Id"]),
         InvoiceNumber = row.Table.Columns.Contains("InvoiceNumber") ? row["InvoiceNumber"]?.ToString() : "",
         ClientId = row.Table.Columns.Contains("ClientId") && row["ClientId"] != DBNull.Value ? Convert.ToInt32(row["ClientId"]) : 0,
-        InvoiceDate = row.Table.Columns.Contains("InvoiceDate") ? row["InvoiceDate"]?.ToString() : "",
         TotalAmount = row.Table.Columns.Contains("TotalAmount") && row["TotalAmount"] != DBNull.Value ? Convert.ToDecimal(row["TotalAmount"]) : 0,
         PaidAmount = row.Table.Columns.Contains("PaidAmount") && row["PaidAmount"] != DBNull.Value ? Convert.ToDecimal(row["PaidAmount"]) : 0,
         Notes = row.Table.Columns.Contains("Notes") ? row["Notes"]?.ToString() : "",
@@ -1630,9 +1629,73 @@ public static class DatabaseHelper
         return items;
     }
 
+    internal static void Initialize()
+    {
+        throw new NotImplementedException();
+    }
 
+    internal static void CloseConnections()
+    {
+        throw new NotImplementedException();
+    }
 
+    internal static object GetClients()
+    {
+        throw new NotImplementedException();
+    }
 
+    internal static IEnumerable<object> GetInvoices()
+    {
+        throw new NotImplementedException();
+    }
 
+    internal static IEnumerable<object> GetPurchases()
+    {
+        throw new NotImplementedException();
+    }
 
+    internal static object GetExpenses()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static object GetItems()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static object GetAccounts()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static bool AddClient(Client client)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static async Task<bool> AddInvoiceAsync(Invoice invoice)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static async Task<bool> UpdateInvoiceAsync(Invoice invoice)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static async Task<bool> DeleteInvoiceAsync(int invoiceId)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static bool AddItem(Item item)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static bool AddPurchase(Purchase purchase)
+    {
+        throw new NotImplementedException();
+    }
 }

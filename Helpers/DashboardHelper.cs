@@ -444,7 +444,6 @@ namespace ETAG_ERP.Helpers
         public int TotalItems { get; set; }
         public int TotalClients { get; set; }
         public int TotalInvoices { get; set; }
-        public int TotalPurchases { get; set; }
         public decimal TotalSales { get; set; }
         public decimal TotalPurchases { get; set; }
         public decimal TotalExpenses { get; set; }

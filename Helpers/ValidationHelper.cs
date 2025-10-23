@@ -624,6 +624,11 @@ namespace ETAG_ERP.Helpers
         {
             return fileSize <= maxSizeInBytes;
         }
+
+        internal static bool IsValidPhone(string phone)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>
