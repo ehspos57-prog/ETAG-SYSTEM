@@ -291,5 +291,6 @@ namespace ETAG_ERP.Helpers
                 // If logging fails, ignore
             }
         }
+
     }
 }

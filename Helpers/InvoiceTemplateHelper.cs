@@ -1,316 +1,409 @@
 using ETAG_ERP.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Windows.Documents;
-using System.Windows.Media;
+using System.Linq;
 using System.Windows;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using ClosedXML.Excel;
 
 namespace ETAG_ERP.Helpers
 {
     public static class InvoiceTemplateHelper
     {
-        public static FlowDocument GenerateInvoiceTemplate(Invoice invoice, List<InvoiceItem> items)
-        {
-            var doc = new FlowDocument
-            {
-                PagePadding = new Thickness(50),
-                FontFamily = new FontFamily("Arial"),
-                FontSize = 12
-            };
-
-            // Company Header
-            AddCompanyHeader(doc);
-            
-            // Invoice Title
-            AddInvoiceTitle(doc, invoice);
-            
-            // Invoice Details
-            AddInvoiceDetails(doc, invoice);
-            
-            // Items Table
-            AddItemsTable(doc, items);
-            
-            // Totals
-            AddTotals(doc, invoice);
-            
-            // Footer
-            AddFooter(doc);
-
-            return doc;
-        }
-
-        private static void AddCompanyHeader(FlowDocument doc)
-        {
-            // Company Name
-            var companyName = new Paragraph(new Run("شركة ETAG للمعدات الصناعية"))
-            {
-                FontSize = 24,
-                FontWeight = FontWeights.Bold,
-                TextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 10)
-            };
-            doc.Blocks.Add(companyName);
-
-            // Company Details
-            var companyDetails = new Paragraph();
-            companyDetails.Inlines.Add(new Run("العنوان: شارع الملك فهد، الرياض، المملكة العربية السعودية"));
-            companyDetails.Inlines.Add(new LineBreak());
-            companyDetails.Inlines.Add(new Run("الهاتف: +966 11 123 4567"));
-            companyDetails.Inlines.Add(new LineBreak());
-            companyDetails.Inlines.Add(new Run("البريد الإلكتروني: info@etag.com"));
-            companyDetails.Inlines.Add(new LineBreak());
-            companyDetails.Inlines.Add(new Run("الرقم الضريبي: 123456789"));
-            companyDetails.TextAlignment = TextAlignment.Center;
-            companyDetails.FontSize = 10;
-            companyDetails.Margin = new Thickness(0, 0, 0, 20);
-            doc.Blocks.Add(companyDetails);
-        }
-
-        private static void AddInvoiceTitle(FlowDocument doc, Invoice invoice)
-        {
-            var title = new Paragraph(new Run("فاتورة مبيعات"))
-            {
-                FontSize = 20,
-                FontWeight = FontWeights.Bold,
-                TextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 20)
-            };
-            doc.Blocks.Add(title);
-        }
-
-        private static void AddInvoiceDetails(FlowDocument doc, Invoice invoice)
-        {
-            var detailsTable = new Table
-            {
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1)
-            };
-
-            // Add columns
-            for (int i = 0; i < 2; i++)
-                detailsTable.Columns.Add(new TableColumn());
-
-            // Header row
-            var headerRow = new TableRow();
-            var headerCell1 = new TableCell(new Paragraph(new Run("تفاصيل الفاتورة")))
-            {
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1),
-                Padding = new Thickness(5),
-                Background = Brushes.LightGray,
-                FontWeight = FontWeights.Bold
-            };
-            var headerCell2 = new TableCell(new Paragraph(new Run("بيانات العميل")))
-            {
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1),
-                Padding = new Thickness(5),
-                Background = Brushes.LightGray,
-                FontWeight = FontWeights.Bold
-            };
-            headerRow.Cells.Add(headerCell1);
-            headerRow.Cells.Add(headerCell2);
-
-            // Data row
-            var dataRow = new TableRow();
-            var dataCell1 = new TableCell();
-            var dataCell1Content = new Paragraph();
-            dataCell1Content.Inlines.Add(new Run($"رقم الفاتورة: {invoice.InvoiceNumber}"));
-            dataCell1Content.Inlines.Add(new LineBreak());
-            dataCell1Content.Inlines.Add(new Run($"التاريخ: {invoice.Date:yyyy-MM-dd}"));
-            dataCell1Content.Inlines.Add(new LineBreak());
-            dataCell1Content.Inlines.Add(new Run($"الحالة: {invoice.Status}"));
-            dataCell1Content.Inlines.Add(new LineBreak());
-            dataCell1Content.Inlines.Add(new Run($"النوع: {invoice.Type}"));
-            dataCell1.BorderBrush = Brushes.Black;
-            dataCell1.BorderThickness = new Thickness(1);
-            dataCell1.Padding = new Thickness(5);
-            dataCell1.Blocks.Add(dataCell1Content);
-
-            var dataCell2 = new TableCell();
-            var dataCell2Content = new Paragraph();
-            dataCell2Content.Inlines.Add(new Run($"العميل: {invoice.ClientName}"));
-            dataCell2Content.Inlines.Add(new LineBreak());
-            dataCell2Content.Inlines.Add(new Run($"المبلغ الإجمالي: {invoice.TotalAmount:N2} ريال"));
-            dataCell2Content.Inlines.Add(new LineBreak());
-            dataCell2Content.Inlines.Add(new Run($"المبلغ المدفوع: {invoice.PaidAmount:N2} ريال"));
-            dataCell2Content.Inlines.Add(new LineBreak());
-            dataCell2Content.Inlines.Add(new Run($"المبلغ المتبقي: {(invoice.TotalAmount - invoice.PaidAmount):N2} ريال"));
-            dataCell2.BorderBrush = Brushes.Black;
-            dataCell2.BorderThickness = new Thickness(1);
-            dataCell2.Padding = new Thickness(5);
-            dataCell2.Blocks.Add(dataCell2Content);
-
-            dataRow.Cells.Add(dataCell1);
-            dataRow.Cells.Add(dataCell2);
-
-            var rowGroup = new TableRowGroup();
-            rowGroup.Rows.Add(headerRow);
-            rowGroup.Rows.Add(dataRow);
-            detailsTable.RowGroups.Add(rowGroup);
-
-            doc.Blocks.Add(detailsTable);
-
-            // Add spacing
-            var spacing = new Paragraph(new Run(""))
-            {
-                Margin = new Thickness(0, 20, 0, 0)
-            };
-            doc.Blocks.Add(spacing);
-        }
-
-        private static void AddItemsTable(FlowDocument doc, List<InvoiceItem> items)
-        {
-            var table = new Table
-            {
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1)
-            };
-
-            // Add columns
-            for (int i = 0; i < 6; i++)
-                table.Columns.Add(new TableColumn());
-
-            // Header row
-            var headerRow = new TableRow();
-            string[] headers = { "رقم", "اسم الصنف", "الكمية", "سعر الوحدة", "الخصم", "المجموع" };
-            
-            foreach (string header in headers)
-            {
-                var cell = new TableCell(new Paragraph(new Run(header)))
-                {
-                    BorderBrush = Brushes.Black,
-                    BorderThickness = new Thickness(1),
-                    Padding = new Thickness(5),
-                    Background = Brushes.LightGray,
-                    FontWeight = FontWeights.Bold
-                };
-                headerRow.Cells.Add(cell);
-            }
-
-            var headerGroup = new TableRowGroup();
-            headerGroup.Rows.Add(headerRow);
-            table.RowGroups.Add(headerGroup);
-
-            // Data rows
-            var dataGroup = new TableRowGroup();
-            int rowNumber = 1;
-            foreach (var item in items)
-            {
-                var row = new TableRow();
-                
-                string[] values = {
-                    rowNumber.ToString(),
-                    item.ItemName,
-                    item.Quantity.ToString(),
-                    item.UnitPrice.ToString("N2"),
-                    item.DiscountRate.ToString("N2") + "%",
-                    item.Total.ToString("N2")
-                };
-
-                foreach (string value in values)
-                {
-                    var cell = new TableCell(new Paragraph(new Run(value)))
-                    {
-                        BorderBrush = Brushes.Black,
-                        BorderThickness = new Thickness(1),
-                        Padding = new Thickness(5)
-                    };
-                    row.Cells.Add(cell);
-                }
-
-                dataGroup.Rows.Add(row);
-                rowNumber++;
-            }
-            table.RowGroups.Add(dataGroup);
-
-            doc.Blocks.Add(table);
-        }
-
-        private static void AddTotals(FlowDocument doc, Invoice invoice)
-        {
-            var totalsTable = new Table
-            {
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1),
-                Margin = new Thickness(0, 20, 0, 0)
-            };
-
-            // Add columns
-            for (int i = 0; i < 2; i++)
-                totalsTable.Columns.Add(new TableColumn());
-
-            // Total rows
-            var totalRows = new List<(string Label, decimal Amount)>
-            {
-                ("المجموع الفرعي:", invoice.TotalAmount),
-                ("الضريبة (14%):", invoice.TotalAmount * 0.14m),
-                ("المجموع الإجمالي:", invoice.TotalAmount * 1.14m),
-                ("المبلغ المدفوع:", invoice.PaidAmount),
-                ("المبلغ المتبقي:", (invoice.TotalAmount * 1.14m) - invoice.PaidAmount)
-            };
-
-            var rowGroup = new TableRowGroup();
-            foreach (var (label, amount) in totalRows)
-            {
-                var row = new TableRow();
-                
-                var labelCell = new TableCell(new Paragraph(new Run(label)))
-                {
-                    BorderBrush = Brushes.Black,
-                    BorderThickness = new Thickness(1),
-                    Padding = new Thickness(5),
-                    FontWeight = FontWeights.Bold
-                };
-                
-                var amountCell = new TableCell(new Paragraph(new Run(amount.ToString("N2") + " ريال")))
-                {
-                    BorderBrush = Brushes.Black,
-                    BorderThickness = new Thickness(1),
-                    Padding = new Thickness(5),
-                    TextAlignment = TextAlignment.Right
-                };
-
-                row.Cells.Add(labelCell);
-                row.Cells.Add(amountCell);
-                rowGroup.Rows.Add(row);
-            }
-
-            totalsTable.RowGroups.Add(rowGroup);
-            doc.Blocks.Add(totalsTable);
-        }
-
-        private static void AddFooter(FlowDocument doc)
-        {
-            var footer = new Paragraph(new Run("شكراً لاختياركم شركة ETAG للمعدات الصناعية"))
-            {
-                FontSize = 14,
-                FontWeight = FontWeights.Bold,
-                TextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0, 30, 0, 10)
-            };
-            doc.Blocks.Add(footer);
-
-            var footerDetails = new Paragraph(new Run("هذه الفاتورة صادرة إلكترونياً ولا تحتاج إلى توقيع"))
-            {
-                FontSize = 10,
-                TextAlignment = TextAlignment.Center,
-                Foreground = Brushes.Gray
-            };
-            doc.Blocks.Add(footerDetails);
-        }
-
-        public static void PrintInvoice(Invoice invoice, List<InvoiceItem> items)
+        /// <summary>
+        /// Generate PDF invoice
+        /// </summary>
+        public static void GeneratePdfInvoice(Invoice invoice, string filePath)
         {
             try
             {
-                var document = GenerateInvoiceTemplate(invoice, items);
-                var printDialog = new System.Windows.Controls.PrintDialog();
-                
-                if (printDialog.ShowDialog() == true)
+                using (var document = new Document(PageSize.A4, 20, 20, 20, 20))
                 {
-                    printDialog.PrintDocument(((IDocumentPaginatorSource)document).DocumentPaginator, $"فاتورة {invoice.InvoiceNumber}");
+                    using (var writer = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create)))
+                    {
+                        document.Open();
+
+                        // Add company header
+                        AddCompanyHeader(document);
+
+                        // Add invoice header
+                        AddInvoiceHeader(document, invoice);
+
+                        // Add client information
+                        AddClientInformation(document, invoice);
+
+                        // Add items table
+                        AddItemsTable(document, invoice);
+
+                        // Add totals
+                        AddTotals(document, invoice);
+
+                        // Add footer
+                        AddFooter(document);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleException(ex, "Generate PDF Invoice");
+            }
+        }
+
+        /// <summary>
+        /// Generate Excel invoice
+        /// </summary>
+        public static void GenerateExcelInvoice(Invoice invoice, string filePath)
+        {
+            try
+            {
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("فاتورة");
+
+                    // Add company header
+                    AddCompanyHeaderExcel(worksheet);
+
+                    // Add invoice header
+                    AddInvoiceHeaderExcel(worksheet, invoice);
+
+                    // Add client information
+                    AddClientInformationExcel(worksheet, invoice);
+
+                    // Add items table
+                    AddItemsTableExcel(worksheet, invoice);
+
+                    // Add totals
+                    AddTotalsExcel(worksheet, invoice);
+
+                    // Auto-fit columns
+                    worksheet.Columns().AdjustToContents();
+
+                    // Save workbook
+                    workbook.SaveAs(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleException(ex, "Generate Excel Invoice");
+            }
+        }
+
+        /// <summary>
+        /// Add company header to PDF
+        /// </summary>
+        private static void AddCompanyHeader(Document document)
+        {
+            var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
+            var title = new Paragraph("شركة إيتاج للمعدات الصناعية", titleFont)
+            {
+                Alignment = Element.ALIGN_CENTER,
+                SpacingAfter = 10
+            };
+            document.Add(title);
+
+            var subtitleFont = FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
+            var subtitle = new Paragraph("معدات هيدروليكية - هوائية - ميكانيكية", subtitleFont)
+            {
+                Alignment = Element.ALIGN_CENTER,
+                SpacingAfter = 20
+            };
+            document.Add(subtitle);
+        }
+
+        /// <summary>
+        /// Add invoice header to PDF
+        /// </summary>
+        private static void AddInvoiceHeader(Document document, Invoice invoice)
+        {
+            var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK);
+            var header = new Paragraph("فاتورة مبيعات", headerFont)
+            {
+                Alignment = Element.ALIGN_CENTER,
+                SpacingAfter = 20
+            };
+            document.Add(header);
+
+            var infoFont = FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+            var info = new Paragraph($"رقم الفاتورة: {invoice.InvoiceNumber} | التاريخ: {invoice.InvoiceDate:yyyy/MM/dd}", infoFont)
+            {
+                Alignment = Element.ALIGN_CENTER,
+                SpacingAfter = 20
+            };
+            document.Add(info);
+        }
+
+        /// <summary>
+        /// Add client information to PDF
+        /// </summary>
+        private static void AddClientInformation(Document document, Invoice invoice)
+        {
+            var clientFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK);
+            var clientTitle = new Paragraph("بيانات العميل:", clientFont)
+            {
+                SpacingAfter = 10
+            };
+            document.Add(clientTitle);
+
+            var infoFont = FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+            var clientInfo = new Paragraph($"الاسم: {invoice.ClientName}\nالعنوان: {invoice.Client?.Address ?? ""}\nالهاتف: {invoice.Client?.Phone ?? ""}", infoFont)
+            {
+                SpacingAfter = 20
+            };
+            document.Add(clientInfo);
+        }
+
+        /// <summary>
+        /// Add items table to PDF
+        /// </summary>
+        private static void AddItemsTable(Document document, Invoice invoice)
+        {
+            var table = new PdfPTable(6)
+            {
+                WidthPercentage = 100,
+                SpacingBefore = 10,
+                SpacingAfter = 10
+            };
+
+            // Set column widths
+            table.SetWidths(new float[] { 1, 3, 1, 1, 1, 1 });
+
+            // Add headers
+            var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
+            var headerBackground = new BaseColor(52, 152, 219);
+
+            var headers = new[] { "م", "اسم الصنف", "الكمية", "سعر الوحدة", "الخصم", "الإجمالي" };
+
+            foreach (var header in headers)
+            {
+                var cell = new PdfPCell(new Phrase(header, headerFont))
+                {
+                    BackgroundColor = headerBackground,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Padding = 8
+                };
+                table.AddCell(cell);
+            }
+
+            // Add data rows
+            var dataFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.BLACK);
+            var alternateBackground = new BaseColor(248, 249, 250);
+
+            for (int i = 0; i < invoice.Items.Count; i++)
+            {
+                var item = invoice.Items[i];
+                var isEven = i % 2 == 0;
+                var total = (item.UnitPrice * item.Quantity) - item.Discount;
+
+                var cells = new[]
+                {
+                    (i + 1).ToString(),
+                    item.ItemName,
+                    item.Quantity.ToString(),
+                    item.UnitPrice.ToString("N2"),
+                    item.Discount.ToString("N2"),
+                    total.ToString("N2")
+                };
+
+                foreach (var cellText in cells)
+                {
+                    var cell = new PdfPCell(new Phrase(cellText, dataFont))
+                    {
+                        HorizontalAlignment = Element.ALIGN_CENTER,
+                        Padding = 6,
+                        BackgroundColor = isEven ? BaseColor.WHITE : alternateBackground
+                    };
+                    table.AddCell(cell);
+                }
+            }
+
+            document.Add(table);
+        }
+
+        /// <summary>
+        /// Add totals to PDF
+        /// </summary>
+        private static void AddTotals(Document document, Invoice invoice)
+        {
+            var totalsFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK);
+            var subtotal = invoice.Items.Sum(i => i.UnitPrice * i.Quantity);
+            var totalDiscount = invoice.Items.Sum(i => i.Discount);
+            var total = subtotal - totalDiscount;
+
+            var totals = new Paragraph($"المجموع الفرعي: {subtotal:N2} جنيه\nالخصم: {totalDiscount:N2} جنيه\nالإجمالي: {total:N2} جنيه", totalsFont)
+            {
+                Alignment = Element.ALIGN_LEFT,
+                SpacingBefore = 20
+            };
+            document.Add(totals);
+        }
+
+        /// <summary>
+        /// Add footer to PDF
+        /// </summary>
+        private static void AddFooter(Document document)
+        {
+            var footerFont = FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+            var footer = new Paragraph("شكراً لاختياركم شركة إيتاج للمعدات الصناعية\nهاتف: 01234567890 | البريد الإلكتروني: info@etag.com", footerFont)
+            {
+                Alignment = Element.ALIGN_CENTER,
+                SpacingBefore = 40
+            };
+            document.Add(footer);
+        }
+
+        /// <summary>
+        /// Add company header to Excel
+        /// </summary>
+        private static void AddCompanyHeaderExcel(ClosedXML.Excel.IXLWorksheet worksheet)
+        {
+            worksheet.Cell("A1").Value = "شركة إيتاج للمعدات الصناعية";
+            worksheet.Cell("A1").Style.Font.Bold = true;
+            worksheet.Cell("A1").Style.Font.FontSize = 18;
+            worksheet.Cell("A1").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            worksheet.Range("A1:F1").Merge();
+
+            worksheet.Cell("A2").Value = "معدات هيدروليكية - هوائية - ميكانيكية";
+            worksheet.Cell("A2").Style.Font.FontSize = 12;
+            worksheet.Cell("A2").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            worksheet.Range("A2:F2").Merge();
+        }
+
+        /// <summary>
+        /// Add invoice header to Excel
+        /// </summary>
+        private static void AddInvoiceHeaderExcel(ClosedXML.Excel.IXLWorksheet worksheet, Invoice invoice)
+        {
+            worksheet.Cell("A4").Value = "فاتورة مبيعات";
+            worksheet.Cell("A4").Style.Font.Bold = true;
+            worksheet.Cell("A4").Style.Font.FontSize = 16;
+            worksheet.Cell("A4").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            worksheet.Range("A4:F4").Merge();
+
+            worksheet.Cell("A5").Value = $"رقم الفاتورة: {invoice.InvoiceNumber} | التاريخ: {invoice.InvoiceDate:yyyy/MM/dd}";
+            worksheet.Cell("A5").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            worksheet.Range("A5:F5").Merge();
+        }
+
+        /// <summary>
+        /// Add client information to Excel
+        /// </summary>
+        private static void AddClientInformationExcel(ClosedXML.Excel.IXLWorksheet worksheet, Invoice invoice)
+        {
+            worksheet.Cell("A7").Value = "بيانات العميل:";
+            worksheet.Cell("A7").Style.Font.Bold = true;
+            worksheet.Cell("A7").Style.Font.FontSize = 12;
+
+            worksheet.Cell("A8").Value = $"الاسم: {invoice.ClientName}";
+            worksheet.Cell("A9").Value = $"العنوان: {invoice.Client?.Address ?? ""}";
+            worksheet.Cell("A10").Value = $"الهاتف: {invoice.Client?.Phone ?? ""}";
+        }
+
+        /// <summary>
+        /// Add items table to Excel
+        /// </summary>
+        private static void AddItemsTableExcel(ClosedXML.Excel.IXLWorksheet worksheet, Invoice invoice)
+        {
+            var startRow = 12;
+            var headers = new[] { "م", "اسم الصنف", "الكمية", "سعر الوحدة", "الخصم", "الإجمالي" };
+
+            // Add headers
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cell(startRow, i + 1).Value = headers[i];
+                worksheet.Cell(startRow, i + 1).Style.Font.Bold = true;
+                worksheet.Cell(startRow, i + 1).Style.Fill.BackgroundColor = XLColor.FromArgb(52, 152, 219);
+                worksheet.Cell(startRow, i + 1).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(startRow, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            }
+
+            // Add data
+            for (int i = 0; i < invoice.Items.Count; i++)
+            {
+                var item = invoice.Items[i];
+                var row = startRow + i + 1;
+                var total = (item.UnitPrice * item.Quantity) - item.Discount;
+
+                worksheet.Cell(row, 1).Value = i + 1;
+                worksheet.Cell(row, 2).Value = item.ItemName;
+                worksheet.Cell(row, 3).Value = item.Quantity;
+                worksheet.Cell(row, 4).Value = item.UnitPrice;
+                worksheet.Cell(row, 5).Value = item.Discount;
+                worksheet.Cell(row, 6).Value = total;
+
+                // Format numbers
+                worksheet.Cell(row, 4).Style.NumberFormat.Format = "#,##0.00";
+                worksheet.Cell(row, 5).Style.NumberFormat.Format = "#,##0.00";
+                worksheet.Cell(row, 6).Style.NumberFormat.Format = "#,##0.00";
+
+                // Alternate row colors
+                if (i % 2 == 1)
+                {
+                    worksheet.Range(row, 1, row, 6).Style.Fill.BackgroundColor = XLColor.FromArgb(248, 249, 250);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add totals to Excel
+        /// </summary>
+        private static void AddTotalsExcel(ClosedXML.Excel.IXLWorksheet worksheet, Invoice invoice)
+        {
+            var startRow = 12 + invoice.Items.Count + 2;
+            var subtotal = invoice.Items.Sum(i => i.UnitPrice * i.Quantity);
+            var totalDiscount = invoice.Items.Sum(i => i.Discount);
+            var total = subtotal - totalDiscount;
+
+            worksheet.Cell(startRow, 1).Value = "المجموع الفرعي:";
+            worksheet.Cell(startRow, 1).Style.Font.Bold = true;
+            worksheet.Cell(startRow, 2).Value = subtotal;
+            worksheet.Cell(startRow, 2).Style.NumberFormat.Format = "#,##0.00";
+
+            worksheet.Cell(startRow + 1, 1).Value = "الخصم:";
+            worksheet.Cell(startRow + 1, 1).Style.Font.Bold = true;
+            worksheet.Cell(startRow + 1, 2).Value = totalDiscount;
+            worksheet.Cell(startRow + 1, 2).Style.NumberFormat.Format = "#,##0.00";
+
+            worksheet.Cell(startRow + 2, 1).Value = "الإجمالي:";
+            worksheet.Cell(startRow + 2, 1).Style.Font.Bold = true;
+            worksheet.Cell(startRow + 2, 2).Value = total;
+            worksheet.Cell(startRow + 2, 2).Style.NumberFormat.Format = "#,##0.00";
+        }
+
+        /// <summary>
+        /// Print invoice
+        /// </summary>
+        public static void PrintInvoice(Invoice invoice)
+        {
+            try
+            {
+                var tempPath = Path.Combine(Path.GetTempPath(), $"invoice_{invoice.InvoiceNumber}_{DateTime.Now:yyyyMMddHHmmss}.pdf");
+                GeneratePdfInvoice(invoice, tempPath);
+
+                // Print the PDF
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = tempPath,
+                    Verb = "print",
+                    UseShellExecute = true
+                });
+
+                // Clean up after a delay
+                System.Threading.Tasks.Task.Delay(5000).ContinueWith(_ =>
+                {
+                    try
+                    {
+                        if (File.Exists(tempPath))
+                        {
+                            File.Delete(tempPath);
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore cleanup errors
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -318,32 +411,39 @@ namespace ETAG_ERP.Helpers
             }
         }
 
-        public static void SaveInvoiceAsPDF(Invoice invoice, List<InvoiceItem> items, string filePath)
+        /// <summary>
+        /// Save invoice template
+        /// </summary>
+        public static void SaveInvoiceTemplate(string templateName, string templatePath, string templateType)
         {
             try
             {
-                var document = GenerateInvoiceTemplate(invoice, items);
-                
-                // Convert FlowDocument to PDF using iTextSharp
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    var pdfWriter = new iTextSharp.text.pdf.PdfWriter(fileStream);
-                    var pdfDoc = new iTextSharp.text.Document();
-                    pdfWriter.Open();
-                    pdfDoc.Open();
-                    
-                    // Add content to PDF
-                    pdfDoc.Add(new iTextSharp.text.Paragraph($"فاتورة مبيعات - {invoice.InvoiceNumber}"));
-                    pdfDoc.Add(new iTextSharp.text.Paragraph($"العميل: {invoice.ClientName}"));
-                    pdfDoc.Add(new iTextSharp.text.Paragraph($"التاريخ: {invoice.Date:yyyy-MM-dd}"));
-                    pdfDoc.Add(new iTextSharp.text.Paragraph($"المبلغ الإجمالي: {invoice.TotalAmount:N2} ريال"));
-                    
-                    pdfDoc.Close();
-                }
+                DatabaseHelper.SavePrintTemplate(templateName, templatePath, templateType);
+                ErrorHandler.ShowSuccess("تم حفظ قالب الفاتورة بنجاح");
             }
             catch (Exception ex)
             {
-                ErrorHandler.HandleException(ex, "Save Invoice as PDF");
+                ErrorHandler.HandleException(ex, "Save Invoice Template");
+            }
+        }
+
+        /// <summary>
+        /// Load invoice template
+        /// </summary>
+        public static string LoadInvoiceTemplate(string templateName)
+        {
+            try
+            {
+                var templates = DatabaseHelper.GetPrintTemplates();
+                var template = templates.AsEnumerable()
+                    .FirstOrDefault(t => t.Field<string>("TemplateName") == templateName);
+
+                return template?.Field<string>("TemplatePath") ?? "";
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleException(ex, "Load Invoice Template");
+                return "";
             }
         }
     }

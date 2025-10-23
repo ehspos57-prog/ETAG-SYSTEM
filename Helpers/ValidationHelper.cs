@@ -1,20 +1,27 @@
+using ETAG_ERP.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
 using System.Windows;
 
 namespace ETAG_ERP.Helpers
 {
     public static class ValidationHelper
     {
-        public static bool ValidateEmail(string email)
+        /// <summary>
+        /// Validate email address
+        /// </summary>
+        public static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 return false;
 
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
+                var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                return emailRegex.IsMatch(email);
             }
             catch
             {
@@ -22,363 +29,679 @@ namespace ETAG_ERP.Helpers
             }
         }
 
-        public static bool ValidatePhone(string phone)
+        /// <summary>
+        /// Validate phone number
+        /// </summary>
+        public static bool IsValidPhoneNumber(string phone)
         {
             if (string.IsNullOrWhiteSpace(phone))
                 return false;
 
-            // Remove all non-digit characters
-            var digits = Regex.Replace(phone, @"\D", "");
-            
-            // Check if it's a valid phone number (7-15 digits)
-            return digits.Length >= 7 && digits.Length <= 15;
-        }
-
-        public static bool ValidateRequired(string value)
-        {
-            return !string.IsNullOrWhiteSpace(value);
-        }
-
-        public static bool ValidateNumber(string value)
-        {
-            return decimal.TryParse(value, out _);
-        }
-
-        public static bool ValidateInteger(string value)
-        {
-            return int.TryParse(value, out _);
-        }
-
-        public static bool ValidatePositiveNumber(decimal value)
-        {
-            return value > 0;
-        }
-
-        public static bool ValidateNonNegativeNumber(decimal value)
-        {
-            return value >= 0;
-        }
-
-        public static bool ValidateDateRange(DateTime startDate, DateTime endDate)
-        {
-            return startDate <= endDate;
-        }
-
-        public static bool ValidatePassword(string password)
-        {
-            if (string.IsNullOrWhiteSpace(password))
+            try
+            {
+                var phoneRegex = new Regex(@"^(\+?2)?01[0-9]{9}$");
+                return phoneRegex.IsMatch(phone.Replace(" ", "").Replace("-", ""));
+            }
+            catch
+            {
                 return false;
-
-            // Password must be at least 6 characters
-            return password.Length >= 6;
+            }
         }
 
-        public static bool ValidateUsername(string username)
-        {
-            if (string.IsNullOrWhiteSpace(username))
-                return false;
-
-            // Username must be 3-20 characters, alphanumeric and underscore only
-            return Regex.IsMatch(username, @"^[a-zA-Z0-9_]{3,20}$");
-        }
-
-        public static bool ValidateArabicText(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return false;
-
-            // Check if text contains Arabic characters
-            return Regex.IsMatch(text, @"[\u0600-\u06FF]");
-        }
-
-        public static bool ValidateEnglishText(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return false;
-
-            // Check if text contains English characters
-            return Regex.IsMatch(text, @"[a-zA-Z]");
-        }
-
-        public static bool ValidateBarcode(string barcode)
-        {
-            if (string.IsNullOrWhiteSpace(barcode))
-                return false;
-
-            // Barcode should be 8-13 digits
-            return Regex.IsMatch(barcode, @"^\d{8,13}$");
-        }
-
-        public static bool ValidateTaxNumber(string taxNumber)
+        /// <summary>
+        /// Validate Egyptian tax number
+        /// </summary>
+        public static bool IsValidTaxNumber(string taxNumber)
         {
             if (string.IsNullOrWhiteSpace(taxNumber))
                 return false;
 
-            // Tax number should be 9-15 digits
-            return Regex.IsMatch(taxNumber, @"^\d{9,15}$");
+            try
+            {
+                var taxRegex = new Regex(@"^\d{9}$");
+                return taxRegex.IsMatch(taxNumber);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public static bool ValidateCommercialRecord(string commercialRecord)
+        /// <summary>
+        /// Validate commercial record number
+        /// </summary>
+        public static bool IsValidCommercialRecord(string commercialRecord)
         {
             if (string.IsNullOrWhiteSpace(commercialRecord))
                 return false;
 
-            // Commercial record should be 6-12 alphanumeric characters
-            return Regex.IsMatch(commercialRecord, @"^[a-zA-Z0-9]{6,12}$");
-        }
-
-        public static void ShowValidationError(string message)
-        {
-            MessageBox.Show(message, "خطأ في التحقق", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
-
-        public static void ShowValidationSuccess(string message)
-        {
-            MessageBox.Show(message, "نجح التحقق", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        public static bool ValidateInvoice(Invoice invoice)
-        {
-            if (invoice == null)
+            try
             {
-                ShowValidationError("فاتورة غير صحيحة");
+                var crRegex = new Regex(@"^CR\d{6}$");
+                return crRegex.IsMatch(commercialRecord.ToUpper());
+            }
+            catch
+            {
                 return false;
             }
+        }
 
-            if (string.IsNullOrWhiteSpace(invoice.InvoiceNumber))
-            {
-                ShowValidationError("يرجى إدخال رقم الفاتورة");
+        /// <summary>
+        /// Validate decimal number
+        /// </summary>
+        public static bool IsValidDecimal(string value, decimal minValue = 0, decimal maxValue = decimal.MaxValue)
+        {
+            if (string.IsNullOrWhiteSpace(value))
                 return false;
+
+            try
+            {
+                if (decimal.TryParse(value, out decimal result))
+                {
+                    return result >= minValue && result <= maxValue;
+                }
+            }
+            catch
+            {
+                // Ignore parsing errors
             }
 
-            if (invoice.Client == null)
-            {
-                ShowValidationError("يرجى اختيار العميل");
+            return false;
+        }
+
+        /// <summary>
+        /// Validate integer number
+        /// </summary>
+        public static bool IsValidInteger(string value, int minValue = 0, int maxValue = int.MaxValue)
+        {
+            if (string.IsNullOrWhiteSpace(value))
                 return false;
+
+            try
+            {
+                if (int.TryParse(value, out int result))
+                {
+                    return result >= minValue && result <= maxValue;
+                }
+            }
+            catch
+            {
+                // Ignore parsing errors
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Validate date
+        /// </summary>
+        public static bool IsValidDate(string value, DateTime? minDate = null, DateTime? maxDate = null)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            try
+            {
+                if (DateTime.TryParse(value, out DateTime result))
+                {
+                    if (minDate.HasValue && result < minDate.Value)
+                        return false;
+                    
+                    if (maxDate.HasValue && result > maxDate.Value)
+                        return false;
+                    
+                    return true;
+                }
+            }
+            catch
+            {
+                // Ignore parsing errors
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Validate required field
+        /// </summary>
+        public static bool IsRequired(string value)
+        {
+            return !string.IsNullOrWhiteSpace(value);
+        }
+
+        /// <summary>
+        /// Validate string length
+        /// </summary>
+        public static bool IsValidLength(string value, int minLength = 0, int maxLength = int.MaxValue)
+        {
+            if (value == null)
+                return minLength == 0;
+
+            return value.Length >= minLength && value.Length <= maxLength;
+        }
+
+        /// <summary>
+        /// Validate item
+        /// </summary>
+        public static ValidationResult ValidateItem(Item item)
+        {
+            var result = new ValidationResult();
+
+            if (!IsRequired(item.ItemName))
+            {
+                result.AddError("اسم الصنف مطلوب");
+            }
+            else if (!IsValidLength(item.ItemName, 1, 100))
+            {
+                result.AddError("اسم الصنف يجب أن يكون بين 1 و 100 حرف");
+            }
+
+            if (!IsRequired(item.Code))
+            {
+                result.AddError("كود الصنف مطلوب");
+            }
+            else if (!IsValidLength(item.Code, 1, 50))
+            {
+                result.AddError("كود الصنف يجب أن يكون بين 1 و 50 حرف");
+            }
+
+            if (item.SellingPrice <= 0)
+            {
+                result.AddError("سعر البيع يجب أن يكون أكبر من صفر");
+            }
+
+            if (item.PurchasePrice < 0)
+            {
+                result.AddError("سعر الشراء لا يمكن أن يكون سالب");
+            }
+
+            if (item.Quantity < 0)
+            {
+                result.AddError("الكمية لا يمكن أن تكون سالبة");
+            }
+
+            if (item.MinStock < 0)
+            {
+                result.AddError("الحد الأدنى للمخزون لا يمكن أن يكون سالب");
+            }
+
+            if (!string.IsNullOrEmpty(item.Email) && !IsValidEmail(item.Email))
+            {
+                result.AddError("البريد الإلكتروني غير صحيح");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validate client
+        /// </summary>
+        public static ValidationResult ValidateClient(Client client)
+        {
+            var result = new ValidationResult();
+
+            if (!IsRequired(client.Name))
+            {
+                result.AddError("اسم العميل مطلوب");
+            }
+            else if (!IsValidLength(client.Name, 1, 100))
+            {
+                result.AddError("اسم العميل يجب أن يكون بين 1 و 100 حرف");
+            }
+
+            if (!string.IsNullOrEmpty(client.Phone) && !IsValidPhoneNumber(client.Phone))
+            {
+                result.AddError("رقم الهاتف غير صحيح");
+            }
+
+            if (!string.IsNullOrEmpty(client.Email) && !IsValidEmail(client.Email))
+            {
+                result.AddError("البريد الإلكتروني غير صحيح");
+            }
+
+            if (!string.IsNullOrEmpty(client.TaxNumber) && !IsValidTaxNumber(client.TaxNumber))
+            {
+                result.AddError("الرقم الضريبي غير صحيح");
+            }
+
+            if (!string.IsNullOrEmpty(client.CommercialRecord) && !IsValidCommercialRecord(client.CommercialRecord))
+            {
+                result.AddError("رقم السجل التجاري غير صحيح");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validate invoice
+        /// </summary>
+        public static ValidationResult ValidateInvoice(Invoice invoice)
+        {
+            var result = new ValidationResult();
+
+            if (!IsRequired(invoice.InvoiceNumber))
+            {
+                result.AddError("رقم الفاتورة مطلوب");
+            }
+            else if (!IsValidLength(invoice.InvoiceNumber, 1, 50))
+            {
+                result.AddError("رقم الفاتورة يجب أن يكون بين 1 و 50 حرف");
+            }
+
+            if (invoice.ClientId == null || invoice.ClientId <= 0)
+            {
+                result.AddError("العميل مطلوب");
             }
 
             if (invoice.TotalAmount <= 0)
             {
-                ShowValidationError("يرجى إدخال مبلغ صحيح");
-                return false;
+                result.AddError("المبلغ الإجمالي يجب أن يكون أكبر من صفر");
             }
 
             if (invoice.PaidAmount < 0)
             {
-                ShowValidationError("المبلغ المدفوع لا يمكن أن يكون سالباً");
-                return false;
+                result.AddError("المبلغ المدفوع لا يمكن أن يكون سالب");
             }
 
             if (invoice.PaidAmount > invoice.TotalAmount)
             {
-                ShowValidationError("المبلغ المدفوع لا يمكن أن يكون أكبر من إجمالي الفاتورة");
-                return false;
+                result.AddError("المبلغ المدفوع لا يمكن أن يكون أكبر من المبلغ الإجمالي");
             }
 
-            return true;
+            if (invoice.Items == null || invoice.Items.Count == 0)
+            {
+                result.AddError("الفاتورة يجب أن تحتوي على صنف واحد على الأقل");
+            }
+
+            return result;
         }
 
-        public static bool ValidateClient(Client client)
+        /// <summary>
+        /// Validate user
+        /// </summary>
+        public static ValidationResult ValidateUser(User user)
         {
-            if (client == null)
+            var result = new ValidationResult();
+
+            if (!IsRequired(user.Username))
             {
-                ShowValidationError("عميل غير صحيح");
-                return false;
+                result.AddError("اسم المستخدم مطلوب");
+            }
+            else if (!IsValidLength(user.Username, 3, 50))
+            {
+                result.AddError("اسم المستخدم يجب أن يكون بين 3 و 50 حرف");
             }
 
-            if (string.IsNullOrWhiteSpace(client.Name))
+            if (!IsRequired(user.FullName))
             {
-                ShowValidationError("يرجى إدخال اسم العميل");
-                return false;
+                result.AddError("الاسم الكامل مطلوب");
+            }
+            else if (!IsValidLength(user.FullName, 1, 100))
+            {
+                result.AddError("الاسم الكامل يجب أن يكون بين 1 و 100 حرف");
             }
 
-            if (!string.IsNullOrWhiteSpace(client.Email) && !ValidateEmail(client.Email))
+            if (!string.IsNullOrEmpty(user.Email) && !IsValidEmail(user.Email))
             {
-                ShowValidationError("يرجى إدخال بريد إلكتروني صحيح");
-                return false;
+                result.AddError("البريد الإلكتروني غير صحيح");
             }
 
-            if (!string.IsNullOrWhiteSpace(client.Phone) && !ValidatePhone(client.Phone))
+            if (!string.IsNullOrEmpty(user.Phone) && !IsValidPhoneNumber(user.Phone))
             {
-                ShowValidationError("يرجى إدخال رقم هاتف صحيح");
-                return false;
+                result.AddError("رقم الهاتف غير صحيح");
             }
 
-            return true;
+            return result;
         }
 
-        public static bool ValidateItem(Item item)
+        /// <summary>
+        /// Validate category
+        /// </summary>
+        public static ValidationResult ValidateCategory(Category category)
         {
-            if (item == null)
+            var result = new ValidationResult();
+
+            if (!IsRequired(category.Name))
             {
-                ShowValidationError("صنف غير صحيح");
-                return false;
+                result.AddError("اسم التصنيف مطلوب");
+            }
+            else if (!IsValidLength(category.Name, 1, 100))
+            {
+                result.AddError("اسم التصنيف يجب أن يكون بين 1 و 100 حرف");
             }
 
-            if (string.IsNullOrWhiteSpace(item.ItemName))
-            {
-                ShowValidationError("يرجى إدخال اسم الصنف");
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(item.ItemCode))
-            {
-                ShowValidationError("يرجى إدخال كود الصنف");
-                return false;
-            }
-
-            if (item.SellingPrice1 <= 0)
-            {
-                ShowValidationError("يرجى إدخال سعر بيع صحيح");
-                return false;
-            }
-
-            if (item.StockQuantity < 0)
-            {
-                ShowValidationError("الكمية في المخزون لا يمكن أن تكون سالبة");
-                return false;
-            }
-
-            return true;
+            return result;
         }
 
-        public static bool ValidateUser(User user)
+        /// <summary>
+        /// Validate expense
+        /// </summary>
+        public static ValidationResult ValidateExpense(Expense expense)
         {
-            if (user == null)
+            var result = new ValidationResult();
+
+            if (!IsRequired(expense.Description))
             {
-                ShowValidationError("مستخدم غير صحيح");
-                return false;
+                result.AddError("وصف المصروف مطلوب");
+            }
+            else if (!IsValidLength(expense.Description, 1, 200))
+            {
+                result.AddError("وصف المصروف يجب أن يكون بين 1 و 200 حرف");
             }
 
-            if (!ValidateUsername(user.Username))
+            if (expense.Amount <= 0)
             {
-                ShowValidationError("اسم المستخدم يجب أن يكون 3-20 حرف (أحرف إنجليزية وأرقام و _ فقط)");
-                return false;
+                result.AddError("مبلغ المصروف يجب أن يكون أكبر من صفر");
             }
 
-            if (string.IsNullOrWhiteSpace(user.FullName))
+            if (expense.Date > DateTime.Now)
             {
-                ShowValidationError("يرجى إدخال الاسم الكامل");
-                return false;
+                result.AddError("تاريخ المصروف لا يمكن أن يكون في المستقبل");
             }
 
-            if (!string.IsNullOrWhiteSpace(user.Email) && !ValidateEmail(user.Email))
-            {
-                ShowValidationError("يرجى إدخال بريد إلكتروني صحيح");
-                return false;
-            }
-
-            if (!string.IsNullOrWhiteSpace(user.Phone) && !ValidatePhone(user.Phone))
-            {
-                ShowValidationError("يرجى إدخال رقم هاتف صحيح");
-                return false;
-            }
-
-            return true;
+            return result;
         }
 
-        public static bool ValidatePurchase(Purchase purchase)
+        /// <summary>
+        /// Validate account
+        /// </summary>
+        public static ValidationResult ValidateAccount(Account account)
         {
-            if (purchase == null)
+            var result = new ValidationResult();
+
+            if (!IsRequired(account.Name))
             {
-                ShowValidationError("أمر شراء غير صحيح");
-                return false;
+                result.AddError("اسم الحساب مطلوب");
+            }
+            else if (!IsValidLength(account.Name, 1, 100))
+            {
+                result.AddError("اسم الحساب يجب أن يكون بين 1 و 100 حرف");
             }
 
-            if (string.IsNullOrWhiteSpace(purchase.PurchaseNumber))
+            if (!IsRequired(account.Type))
             {
-                ShowValidationError("يرجى إدخال رقم أمر الشراء");
-                return false;
+                result.AddError("نوع الحساب مطلوب");
             }
 
-            if (string.IsNullOrWhiteSpace(purchase.Supplier))
-            {
-                ShowValidationError("يرجى إدخال اسم المورد");
-                return false;
-            }
-
-            if (purchase.Total <= 0)
-            {
-                ShowValidationError("يرجى إدخال مبلغ صحيح");
-                return false;
-            }
-
-            if (purchase.Paid < 0)
-            {
-                ShowValidationError("المبلغ المدفوع لا يمكن أن يكون سالباً");
-                return false;
-            }
-
-            if (purchase.Paid > purchase.Total)
-            {
-                ShowValidationError("المبلغ المدفوع لا يمكن أن يكون أكبر من إجمالي الأمر");
-                return false;
-            }
-
-            return true;
+            return result;
         }
 
-        public static void SetValidationError(Control control, string message)
+        /// <summary>
+        /// Validate employee
+        /// </summary>
+        public static ValidationResult ValidateEmployee(Employee employee)
         {
-            if (control is TextBox textBox)
+            var result = new ValidationResult();
+
+            if (!IsRequired(employee.FullName))
             {
-                textBox.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Red);
-                textBox.ToolTip = message;
+                result.AddError("الاسم الكامل مطلوب");
             }
-            else if (control is ComboBox comboBox)
+            else if (!IsValidLength(employee.FullName, 1, 100))
             {
-                comboBox.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Red);
-                comboBox.ToolTip = message;
+                result.AddError("الاسم الكامل يجب أن يكون بين 1 و 100 حرف");
+            }
+
+            if (!IsRequired(employee.JobTitle))
+            {
+                result.AddError("المسمى الوظيفي مطلوب");
+            }
+            else if (!IsValidLength(employee.JobTitle, 1, 100))
+            {
+                result.AddError("المسمى الوظيفي يجب أن يكون بين 1 و 100 حرف");
+            }
+
+            if (employee.Salary < 0)
+            {
+                result.AddError("الراتب لا يمكن أن يكون سالب");
+            }
+
+            if (!string.IsNullOrEmpty(employee.Email) && !IsValidEmail(employee.Email))
+            {
+                result.AddError("البريد الإلكتروني غير صحيح");
+            }
+
+            if (!string.IsNullOrEmpty(employee.Phone) && !IsValidPhoneNumber(employee.Phone))
+            {
+                result.AddError("رقم الهاتف غير صحيح");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validate branch
+        /// </summary>
+        public static ValidationResult ValidateBranch(Branch branch)
+        {
+            var result = new ValidationResult();
+
+            if (!IsRequired(branch.Name))
+            {
+                result.AddError("اسم الفرع مطلوب");
+            }
+            else if (!IsValidLength(branch.Name, 1, 100))
+            {
+                result.AddError("اسم الفرع يجب أن يكون بين 1 و 100 حرف");
+            }
+
+            if (!string.IsNullOrEmpty(branch.Phone) && !IsValidPhoneNumber(branch.Phone))
+            {
+                result.AddError("رقم الهاتف غير صحيح");
+            }
+
+            if (!string.IsNullOrEmpty(branch.Email) && !IsValidEmail(branch.Email))
+            {
+                result.AddError("البريد الإلكتروني غير صحيح");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Show validation errors
+        /// </summary>
+        public static void ShowValidationErrors(ValidationResult result)
+        {
+            if (result.HasErrors)
+            {
+                var errorMessage = string.Join("\n", result.Errors);
+                MessageBox.Show(errorMessage, "أخطاء في التحقق", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        public static void ClearValidationError(Control control)
+        /// <summary>
+        /// Validate password strength
+        /// </summary>
+        public static ValidationResult ValidatePassword(string password)
         {
-            if (control is TextBox textBox)
+            var result = new ValidationResult();
+
+            if (string.IsNullOrWhiteSpace(password))
             {
-                textBox.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
-                textBox.ToolTip = null;
+                result.AddError("كلمة المرور مطلوبة");
+                return result;
             }
-            else if (control is ComboBox comboBox)
+
+            if (password.Length < 6)
             {
-                comboBox.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
-                comboBox.ToolTip = null;
+                result.AddError("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+            }
+
+            if (!password.Any(char.IsDigit))
+            {
+                result.AddError("كلمة المرور يجب أن تحتوي على رقم واحد على الأقل");
+            }
+
+            if (!password.Any(char.IsLetter))
+            {
+                result.AddError("كلمة المرور يجب أن تحتوي على حرف واحد على الأقل");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validate username format
+        /// </summary>
+        public static bool IsValidUsername(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return false;
+
+            try
+            {
+                var usernameRegex = new Regex(@"^[a-zA-Z0-9_]{3,50}$");
+                return usernameRegex.IsMatch(username);
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        public static bool ValidateAllControls(params Control[] controls)
+        /// <summary>
+        /// Validate barcode format
+        /// </summary>
+        public static bool IsValidBarcode(string barcode)
         {
-            bool isValid = true;
+            if (string.IsNullOrWhiteSpace(barcode))
+                return false;
 
-            foreach (var control in controls)
+            try
             {
-                if (control is TextBox textBox)
+                var barcodeRegex = new Regex(@"^\d{8,13}$");
+                return barcodeRegex.IsMatch(barcode);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Validate URL format
+        /// </summary>
+        public static bool IsValidUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
+            try
+            {
+                var urlRegex = new Regex(@"^https?://[^\s/$.?#].[^\s]*$");
+                return urlRegex.IsMatch(url);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Validate file extension
+        /// </summary>
+        public static bool IsValidFileExtension(string fileName, string[] allowedExtensions)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return false;
+
+            try
+            {
+                var extension = System.IO.Path.GetExtension(fileName).ToLower();
+                return allowedExtensions.Contains(extension);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Validate file size
+        /// </summary>
+        public static bool IsValidFileSize(long fileSize, long maxSizeInBytes)
+        {
+            return fileSize <= maxSizeInBytes;
+        }
+    }
+
+    /// <summary>
+    /// Validation result class
+    /// </summary>
+    public class ValidationResult
+    {
+        public List<string> Errors { get; } = new List<string>();
+        public List<string> Warnings { get; } = new List<string>();
+
+        public bool HasErrors => Errors.Count > 0;
+        public bool HasWarnings => Warnings.Count > 0;
+        public bool IsValid => !HasErrors;
+
+        public void AddError(string error)
+        {
+            if (!string.IsNullOrWhiteSpace(error) && !Errors.Contains(error))
+            {
+                Errors.Add(error);
+            }
+        }
+
+        public void AddWarning(string warning)
+        {
+            if (!string.IsNullOrWhiteSpace(warning) && !Warnings.Contains(warning))
+            {
+                Warnings.Add(warning);
+            }
+        }
+
+        public void AddErrors(IEnumerable<string> errors)
+        {
+            foreach (var error in errors)
+            {
+                AddError(error);
+            }
+        }
+
+        public void AddWarnings(IEnumerable<string> warnings)
+        {
+            foreach (var warning in warnings)
+            {
+                AddWarning(warning);
+            }
+        }
+
+        public void Clear()
+        {
+            Errors.Clear();
+            Warnings.Clear();
+        }
+
+        public override string ToString()
+        {
+            var result = new System.Text.StringBuilder();
+            
+            if (HasErrors)
+            {
+                result.AppendLine("الأخطاء:");
+                foreach (var error in Errors)
                 {
-                    if (string.IsNullOrWhiteSpace(textBox.Text))
-                    {
-                        SetValidationError(control, "هذا الحقل مطلوب");
-                        isValid = false;
-                    }
-                    else
-                    {
-                        ClearValidationError(control);
-                    }
-                }
-                else if (control is ComboBox comboBox)
-                {
-                    if (comboBox.SelectedItem == null)
-                    {
-                        SetValidationError(control, "يرجى اختيار قيمة");
-                        isValid = false;
-                    }
-                    else
-                    {
-                        ClearValidationError(control);
-                    }
+                    result.AppendLine($"• {error}");
                 }
             }
 
-            return isValid;
+            if (HasWarnings)
+            {
+                if (HasErrors)
+                    result.AppendLine();
+                
+                result.AppendLine("التحذيرات:");
+                foreach (var warning in Warnings)
+                {
+                    result.AppendLine($"• {warning}");
+                }
+            }
+
+            return result.ToString();
         }
     }
 }

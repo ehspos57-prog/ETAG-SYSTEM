@@ -1234,7 +1234,7 @@ public static class DatabaseHelper
         ExecuteNonQuery(sql,
             new SQLiteParameter("@num", inv.InvoiceNumber ?? ""),
             new SQLiteParameter("@client", inv.ClientId),
-            new SQLiteParameter("@date", inv.InvoiceDate ?? ""),
+            new SQLiteParameter("@date", inv.InvoiceDate.ToString("yyyy-MM-dd")),
             new SQLiteParameter("@total", inv.TotalAmount),
             new SQLiteParameter("@paid", inv.PaidAmount),
             new SQLiteParameter("@notes", inv.Notes ?? ""),
@@ -1250,7 +1250,7 @@ public static class DatabaseHelper
         ExecuteNonQuery(@"UPDATE Invoices SET InvoiceNumber=@num, ClientId=@client, InvoiceDate=@date, TotalAmount=@total, PaidAmount=@paid, Notes=@notes, Status=@status, Type=@type, ClientName=@cname WHERE Id=@Id;",
             new SQLiteParameter("@num", inv.InvoiceNumber ?? ""),
             new SQLiteParameter("@client", inv.ClientId),
-            new SQLiteParameter("@date", inv.InvoiceDate ?? ""),
+            new SQLiteParameter("@date", inv.InvoiceDate.ToString("yyyy-MM-dd")),
             new SQLiteParameter("@total", inv.TotalAmount),
             new SQLiteParameter("@paid", inv.PaidAmount),
             new SQLiteParameter("@notes", inv.Notes ?? ""),
@@ -1348,14 +1348,16 @@ public static class DatabaseHelper
         InitializeDatabase();
     }
 
-    internal static void DeleteClient(Client selected)
+    public static void DeleteClient(Client selected)
     {
-        throw new NotImplementedException();
+        DeleteClient(selected.Id);
     }
 
-    internal static Invoice? GetInvoiceById(int invoiceId)
+    public static Invoice? GetInvoiceById(int invoiceId)
     {
-        throw new NotImplementedException();
+        var dt = GetDataTable("SELECT * FROM Invoices WHERE Id=@Id;", new SQLiteParameter("@Id", invoiceId));
+        if (dt.Rows.Count == 0) return null;
+        return MapInvoice(dt.Rows[0]);
     }
 
     public static List<Category> GetCategories()
@@ -1389,19 +1391,18 @@ public static class DatabaseHelper
         return categories;
     }
 
-    internal static void InsertUser(ETAG_ERP.Views.User newUser)
-    {
-        throw new NotImplementedException();
-    }
 
-    internal static void UpdateUser(ETAG_ERP.Views.User editingUser)
+    public static object ExecuteQuery(string query, Dictionary<string, object> parameters)
     {
-        throw new NotImplementedException();
-    }
-
-    internal static object ExecuteQuery(string v, Dictionary<string, object> dictionary)
-    {
-        throw new NotImplementedException();
+        using var conn = GetConnection();
+        conn.Open();
+        using var cmd = new SQLiteCommand(query, conn);
+        if (parameters != null)
+        {
+            foreach (var p in parameters)
+                cmd.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
+        }
+        return cmd.ExecuteScalar();
     }
 
     /// <summary>
@@ -1424,28 +1425,14 @@ public static class DatabaseHelper
             }
         }
     }
-    internal static System.Data.DataTable ExecuteQuery(string query)
+    public static System.Data.DataTable ExecuteQuery(string query)
     {
-        var dt = new System.Data.DataTable();
-
-        using (var conn = new System.Data.SQLite.SQLiteConnection(_connectionString))
-        {
-            conn.Open();
-            using (var cmd = new System.Data.SQLite.SQLiteCommand(query, conn))
-            {
-                using (var adapter = new System.Data.SQLite.SQLiteDataAdapter(cmd))
-                {
-                    adapter.Fill(dt);
-                }
-            }
-        }
-
-        return dt;
+        return GetDataTable(query);
     }
 
-    internal static void DeleteItem(object itemID)
+    public static void DeleteItem(object itemID)
     {
-        throw new NotImplementedException();
+        DeleteItem(Convert.ToInt32(itemID));
     }
     // ✅ دالة لزرع التصنيفات في قاعدة البيانات في حال كانت فارغة
     public static void SeedCategoriesIfEmpty()
@@ -1476,5 +1463,176 @@ public static class DatabaseHelper
             Console.WriteLine("❌ خطأ أثناء عملية السيدنج: " + ex.Message);
         }
     }
+
+    // ========================
+    // Category Hierarchy Methods
+    // ========================
+    public static List<Category> GetCategoriesByParentId(int? parentId)
+    {
+        var categories = new List<Category>();
+        try
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SQLiteCommand(
+                    "SELECT * FROM Categories WHERE ParentCategoryID = @parentId AND IsActive = 1 ORDER BY Name", 
+                    connection);
+                command.Parameters.AddWithValue("@parentId", parentId ?? (object)DBNull.Value);
+                
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        categories.Add(new Category
+                        {
+                            CategoryID = reader.GetInt32("CategoryID"),
+                            Name = reader.GetString("Name"),
+                            Description = reader.IsDBNull("Description") ? "" : reader.GetString("Description"),
+                            ParentCategoryID = reader.IsDBNull("ParentCategoryID") ? null : reader.GetInt32("ParentCategoryID"),
+                            Icon = reader.IsDBNull("Icon") ? "📁" : reader.GetString("Icon"),
+                            IsActive = reader.GetBoolean("IsActive")
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorHandler.HandleException(ex, "GetCategoriesByParentId");
+        }
+        return categories;
+    }
+
+    public static Category GetCategoryById(int categoryId)
+    {
+        try
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SQLiteCommand(
+                    "SELECT * FROM Categories WHERE CategoryID = @categoryId", 
+                    connection);
+                command.Parameters.AddWithValue("@categoryId", categoryId);
+                
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Category
+                        {
+                            CategoryID = reader.GetInt32("CategoryID"),
+                            Name = reader.GetString("Name"),
+                            Description = reader.IsDBNull("Description") ? "" : reader.GetString("Description"),
+                            ParentCategoryID = reader.IsDBNull("ParentCategoryID") ? null : reader.GetInt32("ParentCategoryID"),
+                            Icon = reader.IsDBNull("Icon") ? "📁" : reader.GetString("Icon"),
+                            IsActive = reader.GetBoolean("IsActive")
+                        };
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorHandler.HandleException(ex, "GetCategoryById");
+        }
+        return null;
+    }
+
+    public static bool HasSubCategories(int categoryId)
+    {
+        try
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SQLiteCommand(
+                    "SELECT COUNT(*) FROM Categories WHERE ParentCategoryID = @categoryId AND IsActive = 1", 
+                    connection);
+                command.Parameters.AddWithValue("@categoryId", categoryId);
+                
+                var count = Convert.ToInt32(command.ExecuteScalar());
+                return count > 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorHandler.HandleException(ex, "HasSubCategories");
+            return false;
+        }
+    }
+
+
+    public static int GetItemCountInCategory(int categoryId)
+    {
+        try
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SQLiteCommand(
+                    "SELECT COUNT(*) FROM Items WHERE CategoryID = @categoryId AND IsActive = 1", 
+                    connection);
+                command.Parameters.AddWithValue("@categoryId", categoryId);
+                
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorHandler.HandleException(ex, "GetItemCountInCategory");
+            return 0;
+        }
+    }
+
+
+
+
+    public static List<Item> GetItemsByCategoryId(int categoryId)
+    {
+        var items = new List<Item>();
+        try
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SQLiteCommand(
+                    "SELECT * FROM Items WHERE CategoryID = @categoryId AND IsActive = 1 ORDER BY Name", 
+                    connection);
+                command.Parameters.AddWithValue("@categoryId", categoryId);
+                
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        items.Add(new Item
+                        {
+                            ItemID = reader.GetInt32("ItemID"),
+                            Name = reader.GetString("Name"),
+                            ItemCode = reader.GetString("ItemCode"),
+                            Description = reader.IsDBNull("Description") ? "" : reader.GetString("Description"),
+                            SellPrice = reader.GetDecimal("SellPrice"),
+                            CostPrice = reader.GetDecimal("CostPrice"),
+                            CategoryID = reader.GetInt32("CategoryID"),
+                            Quantity = reader.IsDBNull("Quantity") ? 0 : (int)reader.GetDecimal("Quantity"),
+                            Unit = reader.IsDBNull("Unit") ? "قطعة" : reader.GetString("Unit"),
+                            IsActive = reader.GetBoolean("IsActive")
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorHandler.HandleException(ex, "GetItemsByCategoryId");
+        }
+        return items;
+    }
+
+
+
+
+
 
 }

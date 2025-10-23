@@ -119,7 +119,7 @@ namespace ETAG_ERP.Helpers
 
                 foreach (var user in users)
                 {
-                    DatabaseHelper.InsertUser(user);
+                    DatabaseHelper_Extensions.InsertUser(user);
                 }
             }
             catch (Exception ex)
@@ -248,7 +248,7 @@ namespace ETAG_ERP.Helpers
 
                 foreach (var item in items)
                 {
-                    DatabaseHelper.InsertItem(item);
+                    DatabaseHelper_Extensions.InsertItem(item);
                 }
             }
             catch (Exception ex)
@@ -306,7 +306,7 @@ namespace ETAG_ERP.Helpers
 
                 foreach (var client in clients)
                 {
-                    DatabaseHelper.InsertClient(client);
+                    DatabaseHelper_Extensions.InsertClient(client);
                 }
             }
             catch (Exception ex)
@@ -365,7 +365,7 @@ namespace ETAG_ERP.Helpers
 
                 foreach (var account in accounts)
                 {
-                    DatabaseHelper.InsertAccount(account);
+                    DatabaseHelper_Extensions.InsertAccount(account);
                 }
             }
             catch (Exception ex)
@@ -378,7 +378,7 @@ namespace ETAG_ERP.Helpers
         {
             try
             {
-                var clients = DatabaseHelper.GetAllClients();
+                    var clients = DatabaseHelper_Extensions.GetAllClients();
                 var client = clients.FirstOrDefault();
 
                 if (client != null)
@@ -417,7 +417,7 @@ namespace ETAG_ERP.Helpers
 
                     foreach (var invoice in invoices)
                     {
-                        DatabaseHelper.InsertInvoice(invoice);
+                        DatabaseHelper_Extensions.InsertInvoice(invoice);
                     }
                 }
             }
@@ -439,7 +439,7 @@ namespace ETAG_ERP.Helpers
                         Supplier = "مورد المعدات الهيدروليكية",
                         Date = DateTime.Now.AddDays(-10),
                         Total = 15000.00m,
-                        Paid = 10000.00m,
+                        Paid = true,
                         Notes = "شراء معدات هيدروليكية",
                         CreatedAt = DateTime.Now.AddDays(-10),
                         UpdatedAt = DateTime.Now.AddDays(-10)
@@ -450,7 +450,7 @@ namespace ETAG_ERP.Helpers
                         Supplier = "شركة قطع الغيار",
                         Date = DateTime.Now.AddDays(-7),
                         Total = 5000.00m,
-                        Paid = 5000.00m,
+                        Paid = true,
                         Notes = "شراء قطع غيار",
                         CreatedAt = DateTime.Now.AddDays(-7),
                         UpdatedAt = DateTime.Now.AddDays(-7)
@@ -459,7 +459,7 @@ namespace ETAG_ERP.Helpers
 
                 foreach (var purchase in purchases)
                 {
-                    DatabaseHelper.InsertPurchase(purchase);
+                    DatabaseHelper_Extensions.InsertPurchase(purchase);
                 }
             }
             catch (Exception ex)
@@ -508,7 +508,7 @@ namespace ETAG_ERP.Helpers
 
                 foreach (var expense in expenses)
                 {
-                    DatabaseHelper.InsertExpense(expense);
+                    DatabaseHelper_Extensions.InsertExpense(expense);
                 }
             }
             catch (Exception ex)
@@ -525,5 +525,6 @@ namespace ETAG_ERP.Helpers
                 return Convert.ToBase64String(hashedBytes);
             }
         }
+
     }
 }

@@ -91,7 +91,7 @@ namespace ETAG_ERP.Helpers
                 ApplyThemeToWindows(theme);
 
                 // Save theme preference
-                DatabaseHelper.SetSetting("Theme", theme.ToString());
+                DatabaseHelper_Extensions.SetSetting("Theme", theme.ToString());
             }
             catch (System.Exception ex)
             {
@@ -245,7 +245,7 @@ namespace ETAG_ERP.Helpers
         {
             try
             {
-                var savedTheme = DatabaseHelper.GetSetting("Theme");
+                var savedTheme = DatabaseHelper_Extensions.GetSetting("Theme");
                 if (!string.IsNullOrEmpty(savedTheme) && Enum.TryParse<Theme>(savedTheme, out var theme))
                 {
                     CurrentTheme = theme;

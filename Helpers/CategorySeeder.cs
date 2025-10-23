@@ -25,10 +25,6 @@ namespace ETAG_ERP.Helpers
             Code = code;
         }
 
-        internal static IEnumerable<object> GetSeedData()
-        {
-            throw new NotImplementedException();
-        }
     }
 
     // ✅ الكلاس الأساسي لتوليد بيانات التصنيفات
