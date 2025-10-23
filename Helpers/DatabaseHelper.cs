@@ -1,4 +1,4 @@
-﻿using ETAG_ERP.Helpers;
+using ETAG_ERP.Helpers;
 using ETAG_ERP.Models;
 using System.Data;
 using System.Data.SQLite;
@@ -8,6 +8,7 @@ using System.Windows;
 public static class DatabaseHelper
 {
     private static string _dbPath = "ETAG_ERP.db";
+    private static object returnId;
     private static readonly string _connectionString = $"Data Source={_dbPath};Version=3;";
 
 
@@ -611,13 +612,13 @@ public static class DatabaseHelper
         string sql = @"INSERT INTO Branches (Name, Address, Phone, Type, IsActive, CreatedAt, CreatedBy) 
                        VALUES (@Name,@Address,@Phone,@Type,@IsActive,@CreatedAt,@CreatedBy);";
         var unused = ExecuteNonQuery(sql,
-            new SQLiteParameter("@Name", b.Name ?? ""),
-            new SQLiteParameter("@Address", b.Address ?? ""),
-            new SQLiteParameter("@Phone", b.Phone ?? ""),
-            new SQLiteParameter("@Type", b.Type ?? ""),
-            new SQLiteParameter("@IsActive", b.IsActive ? 1 : 0),
-            new SQLiteParameter("@CreatedAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-            new SQLiteParameter("@CreatedBy", b.CreatedBy ?? ""));
+        new SQLiteParameter("@Name", b.Name ?? ""),
+        new SQLiteParameter("@Address", b.Address ?? ""),
+        new SQLiteParameter("@Phone", b.Phone ?? ""),
+        new SQLiteParameter("@Type", b.Type ?? ""),
+        new SQLiteParameter("@IsActive", b.IsActive ? 1 : 0),
+        new SQLiteParameter("@CreatedAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+        new SQLiteParameter("@CreatedBy", b.CreatedBy)); // <-- بدون ?? ""، لازم يكون int
         return Convert.ToInt32(ExecuteScalar("SELECT last_insert_rowid();"));
     }
 
@@ -1319,10 +1320,12 @@ public static class DatabaseHelper
         return Convert.ToInt32(ExecuteScalar("SELECT last_insert_rowid();"));
     }
 
-    public static void DeleteReturn(int id)
+    public static bool DeleteReturn(int id)
     {
         ExecuteNonQuery("DELETE FROM ReturnItems WHERE ReturnId=@Id;", new SQLiteParameter("@Id", id));
         ExecuteNonQuery("DELETE FROM Returns WHERE Id=@Id;", new SQLiteParameter("@Id", id));
+        string sql = "DELETE FROM Returns WHERE Id=@Id";
+        return ExecuteNonQuery(sql, new SQLiteParameter("@Id", returnId)) > 0;
     }
 
     // ================== ReturnItems ==================
@@ -1698,4 +1701,74 @@ public static class DatabaseHelper
     {
         throw new NotImplementedException();
     }
+
+    public static List<Return> GetReturns()
+    {
+        var returns = new List<Return>();
+        using (var conn = new SQLiteConnection(ConnectionString))
+        {
+            conn.Open();
+            using (var cmd = new SQLiteCommand("SELECT * FROM Returns", conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    returns.Add(new Return
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        ReturnNumber = reader["ReturnNumber"].ToString(),
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        ClientName = reader["ClientName"].ToString(),
+                        ReturnDate = DateTime.Parse(reader["ReturnDate"].ToString()),
+                        TotalAmount = Convert.ToDecimal(reader["TotalAmount"]),
+                        Status = reader["Status"].ToString(),
+                        Reason = reader["Reason"].ToString(),
+                        Notes = reader["Notes"].ToString()
+                    });
+                }
+            }
+        }
+        return returns;
+    }
+
+    public static bool AddReturn(Return r)
+    {
+        string sql = @"INSERT INTO Returns 
+                   (ReturnNumber, ClientId, ClientName, ReturnDate, TotalAmount, Status, Reason, Notes)
+                   VALUES (@ReturnNumber,@ClientId,@ClientName,@ReturnDate,@TotalAmount,@Status,@Reason,@Notes)";
+        return ExecuteNonQuery(sql,
+            new SQLiteParameter("@ReturnNumber", r.ReturnNumber),
+            new SQLiteParameter("@ClientId", r.ClientId),
+            new SQLiteParameter("@ClientName", r.ClientName),
+            new SQLiteParameter("@ReturnDate", r.ReturnDate.ToString("yyyy-MM-dd HH:mm:ss")),
+            new SQLiteParameter("@TotalAmount", r.TotalAmount),
+            new SQLiteParameter("@Status", r.Status),
+            new SQLiteParameter("@Reason", r.Reason ?? ""),
+            new SQLiteParameter("@Notes", r.Notes ?? "")) > 0;
+    }
+    public static bool UpdateReturn(Return r)
+    {
+        string sql = @"UPDATE Returns SET 
+                   ReturnNumber=@ReturnNumber,
+                   ClientId=@ClientId,
+                   ClientName=@ClientName,
+                   ReturnDate=@ReturnDate,
+                   TotalAmount=@TotalAmount,
+                   Status=@Status,
+                   Reason=@Reason,
+                   Notes=@Notes
+                   WHERE Id=@Id";
+        return ExecuteNonQuery(sql,
+            new SQLiteParameter("@ReturnNumber", r.ReturnNumber),
+            new SQLiteParameter("@ClientId", r.ClientId),
+            new SQLiteParameter("@ClientName", r.ClientName),
+            new SQLiteParameter("@ReturnDate", r.ReturnDate.ToString("yyyy-MM-dd HH:mm:ss")),
+            new SQLiteParameter("@TotalAmount", r.TotalAmount),
+            new SQLiteParameter("@Status", r.Status),
+            new SQLiteParameter("@Reason", r.Reason ?? ""),
+            new SQLiteParameter("@Notes", r.Notes ?? ""),
+            new SQLiteParameter("@Id", r.Id)) > 0;
+    }
+    public static bool IsInitialized => true; // مؤقتًا فقط، أو اضبط حسب المنطق الحقيقي للتهيئة
+
 }
